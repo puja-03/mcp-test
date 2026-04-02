@@ -23,5 +23,6 @@ class CheckPermission
         }
 
         abort(403, 'Unauthorized.');
+        return response('Unauthorized.', 403);
     }
 }

@@ -23,5 +23,6 @@ class CheckRole
         }
 
         abort(403, 'Unauthorized.');
+        return response('Unauthorized.', 403);
     }
 }
