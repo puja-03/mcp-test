@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Middleware\CheckRole;
 use App\Http\Controllers\Admin\UserRoleController;              
-use App\Http\Controllers\Admin\PermissionController
+use App\Http\Controllers\Admin\PermissionController;
 
 Route::inertia('/', 'welcome', [
     'canRegister' => Features::enabled(Features::registration()),
-])->name('home')
+])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');

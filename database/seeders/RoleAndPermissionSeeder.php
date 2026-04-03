@@ -36,16 +36,5 @@ class RoleAndPermissionSeeder extends Seeder
         $userRole->permissions()->sync(
             Permission::where('name', 'view-dashboard')->pluck('id')
         );
-
-        // Create admin user if it doesn't exist
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        $admin->update(['role_id' => $adminRole->id]);
     }
 }

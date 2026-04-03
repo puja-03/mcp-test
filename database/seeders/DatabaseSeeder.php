@@ -14,10 +14,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        // Ensure roles and permissions exist before creating the admin user
+        $this->call([
+            RoleAndPermissionSeeder::class,
+            AdminSeeder::class,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
+        // Create a test user only if it doesn't already exist
+        \App\Models\User::firstOrCreate([
             'email' => 'test@example.com',
+        ], [
+            'name' => 'Test User',
         ]);
 
     }
