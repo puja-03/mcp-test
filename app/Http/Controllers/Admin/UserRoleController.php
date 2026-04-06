@@ -29,6 +29,7 @@ class UserRoleController extends Controller
             'users' => $users,
             'roles' => $roles,
         ]);
+
     }
 
     public function update(Request $request, User $user)
@@ -37,7 +38,11 @@ class UserRoleController extends Controller
             'role_id' => 'nullable|exists:roles,id',
         ]);
 
-        $user->update(['role_id' => $validated['role_id']]);
+        // Only update when the request actually provided a role_id field.
+        // Use $request->exists to detect presence even when the value is null.
+        if ($request->exists('role_id')) {
+            $user->update(['role_id' => $validated['role_id'] ?? $request->input('role_id')]);
+        }
 
         return redirect()->back()->with('success', 'User role updated successfully.');
     }

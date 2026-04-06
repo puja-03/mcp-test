@@ -17,8 +17,10 @@ class RoleAndPermissionSeeder extends Seeder
             'manage-users',
             'manage-roles',
             'manage-permissions',
+            'manage-tenants',
             'view-dashboard',
             'view-admin-panel',
+            
         ];
 
         foreach ($permissions as $permission) {
@@ -28,9 +30,16 @@ class RoleAndPermissionSeeder extends Seeder
         // Create default roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $userRole = Role::firstOrCreate(['name' => 'user']);
+        $tenantAdminRole = Role::firstOrCreate(['name' => 'tenant-admin']);
+        $instructorRole = Role::firstOrCreate(['name' => 'instructor']);
 
         // Assign all permissions to admin
         $adminRole->permissions()->sync(Permission::all()->pluck('id'));
+
+        // Give tenant-admin limited permissions (manage users + view dashboard)
+        $tenantAdminRole->permissions()->sync(
+            Permission::whereIn('name', ['manage-users', 'view-dashboard'])->pluck('id')
+        );
 
         // Assign only view-dashboard to user
         $userRole->permissions()->sync(

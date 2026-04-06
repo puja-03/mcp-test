@@ -16,15 +16,19 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         // Ensure roles and permissions exist before creating the admin user
         $this->call([
+            TenantSeeder::class,
             RoleAndPermissionSeeder::class,
             AdminSeeder::class,
         ]);
 
         // Create a test user only if it doesn't already exist
+        $tenant = \App\Models\Tenant::first();
         \App\Models\User::firstOrCreate([
             'email' => 'test@example.com',
         ], [
             'name' => 'Test User',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'tenant_id' => $tenant?->id,
         ]);
 
     }

@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, router } from '@inertiajs/react';
 import {
     Select,
     SelectContent,
@@ -14,9 +14,11 @@ export default function Users({ users, roles }: { users: User[]; roles: Role[] }
     const { put } = useForm();
 
     const changeRole = (userId: number, roleId: string) => {
-        put(`/admin/users/${userId}`, {
-            data: { role_id: roleId === 'none' ? null : Number(roleId) },
-        });
+        put(`/admin/users/${userId}`, roleId === 'none' ? { role_id: null } : { role_id: Number(roleId) })
+            .then(() => {
+                // Reload page props so UI reflects persisted change
+                router.reload();
+            });
     };
 
     return (

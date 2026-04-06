@@ -31,6 +31,11 @@ const adminNavItems: NavItem[] = [
         icon: Users,
     },
     {
+        title: 'Tenants',
+        href: '/admin/tenants',
+        icon: Users,
+    },
+    {
         title: 'Roles',
         href: '/admin/roles',
         icon: Shield,
@@ -76,6 +81,16 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
                 {isAdmin && <NavMain items={adminNavItems} label="Administration" />}
+                {/* Tenant navigation for users that belong to a tenant */}
+                {auth.user?.tenant_id && (
+                    <NavMain
+                        items={[
+                            { title: 'Tenant Dashboard', href: '/tenant/dashboard', icon: LayoutGrid },
+                            { title: 'Users', href: '/tenant/users', icon: Users },
+                        ]}
+                        label="Tenant"
+                    />
+                )}
             </SidebarContent>
 
             <SidebarFooter>
