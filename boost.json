@@ -1,0 +1,28 @@
+{
+    "agents": [
+        "amp",
+        "claude_code",
+        "codex",
+        "cursor",
+        "gemini",
+        "copilot",
+        "junie",
+        "opencode"
+    ],
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "laravel/fortify"
+    ],
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "mcp-development",
+        "wayfinder-development",
+        "pest-testing",
+        "inertia-react-development",
+        "tailwindcss-development",
+        "fortify-development"
+    ]
+}
