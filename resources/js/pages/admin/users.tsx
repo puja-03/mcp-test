@@ -11,14 +11,10 @@ type Role = { id: number; name: string };
 type User = { id: number; name: string; email: string; role_id: number | null; role: Role | null; created_at: string };
 
 export default function Users({ users, roles }: { users: User[]; roles: Role[] }) {
-    const { put } = useForm();
-
     const changeRole = (userId: number, roleId: string) => {
-        put(`/admin/users/${userId}`, roleId === 'none' ? { role_id: null } : { role_id: Number(roleId) })
-            .then(() => {
-                // Reload page props so UI reflects persisted change
-                router.reload();
-            });
+        router.put(`/admin/users/${userId}`, roleId === 'none' ? { role_id: null } : { role_id: Number(roleId) }, {
+            preserveScroll: true,
+        });
     };
 
     return (

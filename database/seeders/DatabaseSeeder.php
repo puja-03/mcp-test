@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,16 +17,6 @@ class DatabaseSeeder extends Seeder
             TenantSeeder::class,
             RoleAndPermissionSeeder::class,
             AdminSeeder::class,
-        ]);
-
-        // Create a test user only if it doesn't already exist
-        $tenant = \App\Models\Tenant::first();
-        \App\Models\User::firstOrCreate([
-            'email' => 'test@example.com',
-        ], [
-            'name' => 'Test User',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'tenant_id' => $tenant?->id,
         ]);
 
     }
