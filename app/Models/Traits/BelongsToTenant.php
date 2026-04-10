@@ -13,13 +13,29 @@ trait BelongsToTenant
         static::addGlobalScope(new TenantScope());
 
         static::creating(function (Model $model) {
-            if (! app()->bound('currentTenant')) {
-                return;
+            $tenantId = null;
+
+            if (app()->bound('currentTenant')) {
+                $tenant = app('currentTenant');
+                if ($tenant) {
+                    $tenantId = $tenant->id;
+                }
             }
 
-            $tenant = app('currentTenant');
-            if ($tenant && empty($model->tenant_id)) {
-                $model->tenant_id = $tenant->id;
+            if (!$tenantId && auth()->check()) {
+                $tenantId = auth()->user()->tenant_id;
+            }
+
+            // Local dev fallback if no tenant is found in session/user
+            if (!$tenantId && app()->environment('local')) {
+                $firstTenant = Tenant::first();
+                if ($firstTenant) {
+                    $tenantId = $firstTenant->id;
+                }
+            }
+
+            if ($tenantId && empty($model->tenant_id)) {
+                $model->tenant_id = $tenantId;
             }
         });
     }

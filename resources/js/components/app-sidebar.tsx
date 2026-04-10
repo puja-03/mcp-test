@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users, GraduationCap, Calendar, CheckSquare, CreditCard, DollarSign, FileEdit, Award, FileText } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,7 +16,7 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem, Auth } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems: NavItem[] = [s
     {
         title: 'Dashboard',
         href: dashboard(),
@@ -45,6 +45,25 @@ const adminNavItems: NavItem[] = [
         href: '/admin/permissions',
         icon: Key,
     },
+];
+
+const academicNavItems: NavItem[] = [
+    { title: 'Courses', href: '/admin/courses', icon: BookOpen },
+    { title: 'Batches', href: '/admin/batches', icon: Users },
+    { title: 'Enrollments', href: '/admin/enrollments', icon: GraduationCap },
+    { title: 'Class Sessions', href: '/admin/class-sessions', icon: Calendar },
+    { title: 'Attendances', href: '/admin/attendances', icon: CheckSquare },
+];
+
+const financialNavItems: NavItem[] = [
+    { title: 'Fee Structures', href: '/admin/fee-structures', icon: FileText },
+    { title: 'Installments', href: '/admin/installments', icon: CreditCard },
+    { title: 'Payments', href: '/admin/payments', icon: DollarSign },
+];
+
+const examNavItems: NavItem[] = [
+    { title: 'Exams', href: '/admin/exams', icon: FileEdit },
+    { title: 'Results', href: '/admin/results', icon: Award },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -80,7 +99,14 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
-                {isAdmin && <NavMain items={adminNavItems} label="Administration" />}
+                {isAdmin && (
+                    <>
+                        <NavMain items={academicNavItems} label="Academic" />
+                        <NavMain items={financialNavItems} label="Financials" />
+                        <NavMain items={examNavItems} label="Exams & Results" />
+                        <NavMain items={adminNavItems} label="System Administration" />
+                    </>
+                )}
                 {/* Tenant navigation for users that belong to a tenant */}
                 {auth.user?.tenant_id && (
                     <NavMain
@@ -100,4 +126,3 @@ export function AppSidebar() {
         </Sidebar>
     );
 }
- 
