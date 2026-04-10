@@ -1,0 +1,14 @@
+import { Head, router } from '@inertiajs/react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { useState } from 'react';
+export default function Index({ enrollments, batches, filters }: any) {
+    const [batchId, setBatchId] = useState(filters.batch_id || '');
+    return (<><Head title="Enrollments" /><div className="flex h-full flex-1 flex-col gap-4 p-6">
+        <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Enrollments</h1><Button onClick={() => router.visit('/tenant/enrollments/create')}>New Enrollment</Button></div>
+        <form onSubmit={e => { e.preventDefault(); router.get('/tenant/enrollments', { batch_id: batchId }, { preserveState: true }); }} className="flex items-center gap-2">
+            <select value={batchId} onChange={e => setBatchId(e.target.value)} className="flex h-10 w-[250px] rounded-md border border-input bg-background px-3 py-2 text-sm"><option value="">All Batches</option>{batches.map((b:any)=><option key={b.id} value={b.id}>{b.name} ({b.course?.name})</option>)}</select>
+            <Button type="submit" variant="secondary">Filter</Button></form>
+        <div className="rounded-md border bg-card"><table className="w-full text-sm"><thead><tr className="border-b"><th className="h-12 px-4 text-left font-medium">Student</th><th className="h-12 px-4 text-left font-medium">Batch</th><th className="h-12 px-4 text-left font-medium">Date</th><th className="h-12 px-4 text-left font-medium">Status</th><th className="h-12 px-4 text-right font-medium">Actions</th></tr></thead>
+        <tbody>{enrollments.data.map((e:any) => (<tr key={e.id} className="border-b"><td className="p-4"><div className="font-medium">{e.student?.name}</div><div className="text-xs text-muted-foreground">{e.student?.email}</div></td><td className="p-4"><div className="font-medium">{e.batch?.name}</div><div className="text-xs text-muted-foreground">{e.batch?.course?.name}</div></td><td className="p-4">{e.enrollment_date}</td><td className="p-4 capitalize">{e.status}</td><td className="p-4 text-right flex gap-2 justify-end"><Button variant="outline" size="sm" onClick={() => router.visit(`/tenant/enrollments/${e.id}/edit`)}>Edit</Button><Button variant="destructive" size="sm" onClick={() => { if(confirm('Delete?')) router.delete(`/tenant/enrollments/${e.id}`); }}>Delete</Button></td></tr>))}
+        {enrollments.data.length===0 && <tr><td colSpan={5} className="p-4 text-center text-muted-foreground">No enrollments.</td></tr>}</tbody></table></div>
+        <div className="flex justify-end gap-2">{enrollments.links.map((l:any,k:number) => <Button key={k} variant={l.active?"default":"outline"} disabled={!l.url} dangerouslySetInnerHTML={{__html:l.label}} onClick={() => l.url && router.visit(l.url)} size="sm" />)}</div>
+    </div></>);
+}

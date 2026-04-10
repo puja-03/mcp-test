@@ -1,0 +1,14 @@
+import { Head, router } from '@inertiajs/react'; import { Button } from '@/components/ui/button'; import { useState } from 'react'; import { Badge } from '@/components/ui/badge';
+export default function Index({ attendances, sessions, filters }: any) {
+    const [sessionId, setSessionId] = useState(filters.session_id || '');
+    return (<><Head title="Attendances" /><div className="flex h-full flex-1 flex-col gap-4 p-6">
+        <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Attendances</h1><Button onClick={() => router.visit('/tenant/attendances/create')}>Mark Attendance</Button></div>
+        <form onSubmit={e => { e.preventDefault(); router.get('/tenant/attendances', { session_id: sessionId }, { preserveState: true }); }} className="flex items-center gap-2">
+            <select value={sessionId} onChange={e => setSessionId(e.target.value)} className="flex h-10 w-[350px] rounded-md border border-input bg-background px-3 py-2 text-sm"><option value="">All Sessions</option>{sessions.map((s:any)=><option key={s.id} value={s.id}>{s.session_date} - {s.batch?.name}</option>)}</select>
+            <Button type="submit" variant="secondary">Filter</Button></form>
+        <div className="rounded-md border bg-card"><table className="w-full text-sm"><thead><tr className="border-b"><th className="h-12 px-4 text-left font-medium">Session</th><th className="h-12 px-4 text-left font-medium">Student</th><th className="h-12 px-4 text-left font-medium">Status</th><th className="h-12 px-4 text-left font-medium">Remarks</th><th className="h-12 px-4 text-right font-medium">Actions</th></tr></thead>
+        <tbody>{attendances.data.map((a:any) => (<tr key={a.id} className="border-b"><td className="p-4"><div className="font-medium">{a.class_session?.session_date}</div><div className="text-xs text-muted-foreground">{a.class_session?.batch?.name}</div></td><td className="p-4"><div className="font-medium">{a.student?.name}</div></td><td className="p-4"><Badge variant={a.status==='present'?'success':a.status==='absent'?'destructive':'secondary'}>{a.status}</Badge></td><td className="p-4 text-muted-foreground">{a.remarks||'—'}</td><td className="p-4 text-right flex gap-2 justify-end"><Button variant="destructive" size="sm" onClick={() => { if(confirm('Delete?')) router.delete(`/tenant/attendances/${a.id}`); }}>Delete</Button></td></tr>))}
+        {attendances.data.length===0 && <tr><td colSpan={5} className="p-4 text-center text-muted-foreground">No records.</td></tr>}</tbody></table></div>
+        <div className="flex justify-end gap-2">{attendances.links.map((l:any,k:number) => <Button key={k} variant={l.active?"default":"outline"} disabled={!l.url} dangerouslySetInnerHTML={{__html:l.label}} onClick={() => l.url && router.visit(l.url)} size="sm" />)}</div>
+    </div></>);
+}
