@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -17,13 +18,28 @@ class UserController extends Controller
             abort(404, 'Tenant not found');
         }
 
-        $users = User::where('tenant_id', $tenant->id)->with('role')->get();
-        $roles = \App\Models\Role::all();
+        $users = User::where('tenant_id', $tenant->id)
+            ->with('role')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->input('role'), function ($query, $role) {
+                $query->whereHas('role', fn ($q) => $q->where('name', $role));
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $roles = Role::all();
 
         return Inertia::render('tenant/users', [
             'users' => $users,
             'tenant' => $tenant,
             'roles' => $roles,
+            'filters' => $request->only(['search', 'role']),
         ]);
     }
 
@@ -67,10 +83,18 @@ class UserController extends Controller
         ]);
 
         $update = [];
-        if (isset($data['name'])) $update['name'] = $data['name'];
-        if (isset($data['email'])) $update['email'] = $data['email'];
-        if (! empty($data['password'])) $update['password'] = Hash::make($data['password']);
-        if (array_key_exists('role_id', $data)) $update['role_id'] = $data['role_id'];
+        if (isset($data['name'])) {
+            $update['name'] = $data['name'];
+        }
+        if (isset($data['email'])) {
+            $update['email'] = $data['email'];
+        }
+        if (! empty($data['password'])) {
+            $update['password'] = Hash::make($data['password']);
+        }
+        if (array_key_exists('role_id', $data)) {
+            $update['role_id'] = $data['role_id'];
+        }
 
         $user->update($update);
 
@@ -85,6 +109,7 @@ class UserController extends Controller
         }
 
         $user->delete();
+
         return redirect()->back()->with('success', 'User deleted');
     }
 }

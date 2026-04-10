@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Batch;
+use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -30,6 +34,12 @@ class DashboardController extends Controller
         return Inertia::render('tenant/dashboard', [
             'tenant' => $tenant,
             'user' => $user,
+            'stats' => [
+                'students_count' => User::whereHas('role', fn ($q) => $q->where('name', 'student'))->count(),
+                'courses_count' => Course::count(),
+                'batches_count' => Batch::count(),
+                'enrollments_count' => Enrollment::count(),
+            ],
         ]);
     }
 }
