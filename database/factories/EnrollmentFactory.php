@@ -18,7 +18,13 @@ class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'tenant_id' => \App\Models\Tenant::first()->id ?? 1,
+            'student_id' => \App\Models\User::factory(),
+            'batch_id' => \App\Models\Batch::factory(),
+            'enrollment_date' => fake()->dateTimeBetween('-6 months', 'now'),
+            'status' => 'active',
+            'amount' => fake()->randomFloat(2, 5000, 20000),
+            'currency' => 'INR',
         ];
     }
 }

@@ -18,7 +18,12 @@ class BatchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'tenant_id' => \App\Models\Tenant::first()->id ?? 1,
+            'course_id' => \App\Models\Course::factory(),
+            'name' => 'Batch ' . strtoupper(fake()->bothify('??-###')),
+            'start_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
+            'end_date' => fake()->dateTimeBetween('+6 months', '+12 months'),
+            'status' => 'active',
         ];
     }
 }
