@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,7 +15,7 @@ class CourseController extends Controller
         $search = $request->input('search');
         $status = $request->input('status');
 
-        $courses = Course::query()
+        $courses = Course::with('instructor')
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('code', 'like', "%{$search}%");
@@ -38,7 +39,13 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('admin/courses/Create');
+        $instructors = User::whereHas('role', function ($q) {
+            $q->where('name', 'instructor');
+        })->select('id', 'name', 'email')->get();
+
+        return Inertia::render('admin/courses/Create', [
+            'instructors' => $instructors,
+        ]);
     }
 
     public function store(Request $request)
@@ -50,24 +57,36 @@ class CourseController extends Controller
             'duration_months' => 'nullable|integer|min:1',
             'total_fees' => 'required|numeric|min:0',
             'is_active' => 'boolean',
+            'is_published' => 'boolean',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
         $validated['is_active'] = $request->input('is_active', true);
-
-        // tenant_id is automatically added by global scope / trait if configured,
-        // or we need to assign it manually if it's BelongsToTenant.
-        // Assuming BelongsToTenant auto-injects on creating, else we need to set it.
-        // Usually, the trait hooks into "creating" event to set `tenant_id = current_tenant_id`.
+        $validated['is_published'] = $request->input('is_published', false);
 
         Course::create($validated);
 
         return redirect()->route('admin.courses.index')->with('success', 'Course created successfully.');
     }
 
+    public function show(Course $course)
+    {
+        $course->load(['instructor', 'chapters.topics', 'batches']);
+
+        return Inertia::render('admin/courses/Show', [
+            'course' => $course,
+        ]);
+    }
+
     public function edit(Course $course)
     {
+        $instructors = User::whereHas('role', function ($q) {
+            $q->where('name', 'instructor');
+        })->select('id', 'name', 'email')->get();
+
         return Inertia::render('admin/courses/Edit', [
             'course' => $course,
+            'instructors' => $instructors,
         ]);
     }
 
@@ -80,9 +99,12 @@ class CourseController extends Controller
             'duration_months' => 'nullable|integer|min:1',
             'total_fees' => 'required|numeric|min:0',
             'is_active' => 'boolean',
+            'is_published' => 'boolean',
+            'user_id' => 'nullable|exists:users,id',
         ]);
 
         $validated['is_active'] = $request->input('is_active', true);
+        $validated['is_published'] = $request->input('is_published', false);
 
         $course->update($validated);
 

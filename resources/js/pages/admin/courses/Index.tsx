@@ -46,6 +46,7 @@ export default function Index({ courses, filters }: any) {
                                 <tr className="border-b">
                                     <th className="h-12 px-4 text-left font-medium">Name</th>
                                     <th className="h-12 px-4 text-left font-medium">Code</th>
+                                    <th className="h-12 px-4 text-left font-medium">Instructor</th>
                                     <th className="h-12 px-4 text-left font-medium">Fee</th>
                                     <th className="h-12 px-4 text-left font-medium">Status</th>
                                     <th className="h-12 px-4 text-right font-medium">Actions</th>
@@ -56,14 +57,18 @@ export default function Index({ courses, filters }: any) {
                                     <tr key={course.id} className="border-b">
                                         <td className="p-4 align-middle font-medium">{course.name}</td>
                                         <td className="p-4 align-middle text-muted-foreground">{course.code || '—'}</td>
-                                        <td className="p-4 align-middle">${course.total_fees}</td>
+                                        <td className="p-4 align-middle text-muted-foreground">{course.instructor?.name || '—'}</td>
+                                        <td className="p-4 align-middle">₹{course.total_fees}</td>
                                         <td className="p-4 align-middle">
                                             <Badge variant={course.is_active ? 'default' : 'secondary'}>
                                                 {course.is_active ? 'Active' : 'Inactive'}
                                             </Badge>
                                         </td>
                                         <td className="p-4 align-middle text-right flex gap-2 justify-end">
-                                            <Button variant="outline" size="sm" onClick={() => router.visit(`/admin/courses/${course.id}/edit`)}>
+                                            <Button variant="outline" size="sm" onClick={() => router.visit(`/admin/courses/${course.slug}`)}>
+                                                View
+                                            </Button>
+                                            <Button variant="outline" size="sm" onClick={() => router.visit(`/admin/courses/${course.slug}/edit`)}>
                                                 Edit
                                             </Button>
                                             <Button variant="destructive" size="sm" onClick={() => handleDelete(course.id)}>

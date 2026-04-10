@@ -2,18 +2,21 @@
 
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\BatchController;
+use App\Http\Controllers\Admin\ChapterController;
 use App\Http\Controllers\Admin\ClassSessionController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\FeeStructureController;
 use App\Http\Controllers\Admin\InstallmentController;
+use App\Http\Controllers\Admin\InstructorProfileController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ResultController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TenantUserController;
+use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\UserController;
@@ -66,9 +69,16 @@ Route::middleware([TenantResolver::class])->group(function () {
         Route::delete('/tenants/{tenant}/users/{user}', [TenantUserController::class, 'destroy'])->name('tenants.users.destroy');
 
         // Academic core
-        Route::resource('courses', CourseController::class)->except(['show']);
+        Route::resource('courses', CourseController::class);
         Route::resource('batches', BatchController::class)->except(['show']);
         Route::resource('enrollments', EnrollmentController::class)->except(['show']);
+
+        // LMS Content
+        Route::resource('chapters', ChapterController::class)->except(['show']);
+        Route::resource('topics', TopicController::class)->except(['show']);
+
+        // Instructor Profiles
+        Route::resource('instructors', InstructorProfileController::class)->except(['show']);
 
         // Attendance
         Route::resource('class-sessions', ClassSessionController::class)->except(['show']);

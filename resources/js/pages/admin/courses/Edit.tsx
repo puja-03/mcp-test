@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function Edit({ course }: any) {
+export default function Edit({ course, instructors }: any) {
     const { data, setData, put, processing, errors } = useForm({
         name: course.name || '',
         code: course.code || '',
@@ -11,11 +11,13 @@ export default function Edit({ course }: any) {
         duration_months: course.duration_months || '',
         total_fees: course.total_fees || '',
         is_active: course.is_active ?? true,
+        is_published: course.is_published ?? false,
+        user_id: course.user_id || '',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/courses/${course.id}`);
+        put(`/admin/courses/${course.slug}`);
     };
 
     return (
@@ -44,10 +46,28 @@ export default function Edit({ course }: any) {
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <Label htmlFor="total_fees">Total Fees</Label>
-                    <Input id="total_fees" type="number" step="0.01" value={data.total_fees} onChange={e => setData('total_fees', e.target.value)} />
-                    {errors.total_fees && <div className="text-red-500 text-sm">{errors.total_fees}</div>}
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="total_fees">Total Fees (₹)</Label>
+                        <Input id="total_fees" type="number" step="0.01" value={data.total_fees} onChange={e => setData('total_fees', e.target.value)} />
+                        {errors.total_fees && <div className="text-red-500 text-sm">{errors.total_fees}</div>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="user_id">Instructor</Label>
+                        <select
+                            id="user_id"
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                            value={data.user_id}
+                            onChange={e => setData('user_id', e.target.value)}
+                        >
+                            <option value="">No Instructor</option>
+                            {(instructors || []).map((u: any) => (
+                                <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
+                            ))}
+                        </select>
+                        {errors.user_id && <div className="text-red-500 text-sm">{errors.user_id}</div>}
+                    </div>
                 </div>
 
                 <div className="space-y-2">
@@ -61,10 +81,16 @@ export default function Edit({ course }: any) {
                     {errors.description && <div className="text-red-500 text-sm">{errors.description}</div>}
                 </div>
 
-                <label className="flex items-center gap-2">
-                    <input type="checkbox" checked={data.is_active} onChange={e => setData('is_active', e.target.checked)} />
-                    <span>Is Active</span>
-                </label>
+                <div className="flex items-center gap-6">
+                    <label className="flex items-center gap-2">
+                        <input type="checkbox" checked={data.is_active} onChange={e => setData('is_active', e.target.checked)} />
+                        <span>Active</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                        <input type="checkbox" checked={data.is_published} onChange={e => setData('is_published', e.target.checked)} />
+                        <span>Published</span>
+                    </label>
+                </div>
 
                 <div className="flex gap-2">
                     <Button disabled={processing} type="submit">Update Course</Button>

@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users, GraduationCap, Calendar, CheckSquare, CreditCard, DollarSign, FileEdit, Award, FileText } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users, GraduationCap, Calendar, CheckSquare, CreditCard, DollarSign, FileEdit, Award, FileText, BookOpenCheck, Video, UserCheck } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,7 +16,7 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem, Auth } from '@/types';
 
-const mainNavItems: NavItem[] = [s
+const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
@@ -25,30 +25,16 @@ const mainNavItems: NavItem[] = [s
 ];
 
 const adminNavItems: NavItem[] = [
-    {
-        title: 'Users',
-        href: '/admin/users',
-        icon: Users,
-    },
-    {
-        title: 'Tenants',
-        href: '/admin/tenants',
-        icon: Users,
-    },
-    {
-        title: 'Roles',
-        href: '/admin/roles',
-        icon: Shield,
-    },
-    {
-        title: 'Permissions',
-        href: '/admin/permissions',
-        icon: Key,
-    },
+    { title: 'Users', href: '/admin/users', icon: Users },
+    { title: 'Tenants', href: '/admin/tenants', icon: Users },
+    { title: 'Roles', href: '/admin/roles', icon: Shield },
+    { title: 'Permissions', href: '/admin/permissions', icon: Key },
 ];
 
 const academicNavItems: NavItem[] = [
     { title: 'Courses', href: '/admin/courses', icon: BookOpen },
+    { title: 'Chapters', href: '/admin/chapters', icon: BookOpenCheck },
+    { title: 'Topics', href: '/admin/topics', icon: Video },
     { title: 'Batches', href: '/admin/batches', icon: Users },
     { title: 'Enrollments', href: '/admin/enrollments', icon: GraduationCap },
     { title: 'Class Sessions', href: '/admin/class-sessions', icon: Calendar },
@@ -64,6 +50,10 @@ const financialNavItems: NavItem[] = [
 const examNavItems: NavItem[] = [
     { title: 'Exams', href: '/admin/exams', icon: FileEdit },
     { title: 'Results', href: '/admin/results', icon: Award },
+];
+
+const instructorNavItems: NavItem[] = [
+    { title: 'Instructor Profiles', href: '/admin/instructors', icon: UserCheck },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -102,6 +92,7 @@ export function AppSidebar() {
                 {isAdmin && (
                     <>
                         <NavMain items={academicNavItems} label="Academic" />
+                        <NavMain items={instructorNavItems} label="Instructors" />
                         <NavMain items={financialNavItems} label="Financials" />
                         <NavMain items={examNavItems} label="Exams & Results" />
                         <NavMain items={adminNavItems} label="System Administration" />
