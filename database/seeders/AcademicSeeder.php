@@ -21,26 +21,27 @@ class AcademicSeeder extends Seeder
         $courses = Course::where('tenant_id', $tenant->id)->get();
 
         foreach ($courses as $course) {
-            // Create a batch
-            $batch = Batch::create([
-                'tenant_id' => $tenant->id,
-                'course_id' => $course->id,
-                'name' => 'Batch ' . $course->code . ' - A',
-                'start_date' => now()->startOfMonth(),
-                'end_date' => now()->addMonths(6),
-                'status' => 'active',
-            ]);
+            // Create a batch using updateOrCreate to prevent unique constraint violations
+            $batch = Batch::updateOrCreate(
+                ['tenant_id' => $tenant->id, 'name' => 'Batch ' . $course->code . ' - A'],
+                [
+                    'course_id' => $course->id,
+                    'start_date' => now()->startOfMonth(),
+                    'end_date' => now()->addMonths(6),
+                    'status' => 'active',
+                ]
+            );
 
-            // Enroll the student
-            Enrollment::create([
-                'tenant_id' => $tenant->id,
-                'student_id' => $student->id,
-                'batch_id' => $batch->id,
-                'enrollment_date' => now(),
-                'status' => 'active',
-                'amount' => $course->total_fees,
-                'currency' => 'INR',
-            ]);
+            // Enroll the student using updateOrCreate
+            Enrollment::updateOrCreate(
+                ['tenant_id' => $tenant->id, 'student_id' => $student->id, 'batch_id' => $batch->id],
+                [
+                    'enrollment_date' => now(),
+                    'status' => 'active',
+                    'amount' => $course->total_fees,
+                    'currency' => 'INR',
+                ]
+            );
         }
     }
 }
