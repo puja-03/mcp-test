@@ -13,16 +13,16 @@ class TenantSeeder extends Seeder
     public function run(): void
     {
         Tenant::firstOrCreate(
-            ['domain' => 'acme'],
+            ['domain' => 'global'],
             [
-                'name' => 'Acme Corporation',
+                'name' => 'Global Coaching Academy',
             ]
         );
 
         Tenant::firstOrCreate(
-            ['domain' => 'test'],
+            ['domain' => 'acme'],
             [
-                'name' => 'Test Company',
+                'name' => 'Acme Science Hub',
             ]
         );
     }

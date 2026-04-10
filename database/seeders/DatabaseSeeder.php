@@ -11,13 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        // Ensure roles and permissions exist before creating the admin user
         $this->call([
-            TenantSeeder::class,
             RoleAndPermissionSeeder::class,
-            AdminSeeder::class,
+            TenantSeeder::class,
+            UserSeeder::class,
+            LmsSeeder::class,
+            AcademicSeeder::class,
         ]);
-
     }
 }
