@@ -38,7 +38,6 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Create default roles
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
         $tenantAdminRole = Role::firstOrCreate(['name' => 'tenant-admin']);
         $instructorRole = Role::firstOrCreate(['name' => 'instructor']);
         $studentRole = Role::firstOrCreate(['name' => 'student']);
@@ -86,9 +85,6 @@ class RoleAndPermissionSeeder extends Seeder
             ])->pluck('id')
         );
 
-        // Assign only view-dashboard to user
-        $userRole->permissions()->sync(
-            Permission::where('name', 'view-dashboard')->pluck('id')
-        );
+        // Student permissions are already assigned above.
     }
 }
