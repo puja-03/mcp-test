@@ -15,6 +15,7 @@ class EnrollmentController extends Controller
     {
         $enrollments = Enrollment::with(['student', 'batch.course'])
             ->when($request->input('batch_id'), fn ($q, $b) => $q->where('batch_id', $b))
+            ->when($request->input('status'), fn ($q, $s) => $q->where('status', $s))
             ->latest()
             ->paginate(15)
             ->withQueryString();
@@ -24,7 +25,7 @@ class EnrollmentController extends Controller
         return Inertia::render('tenant/enrollments/Index', [
             'enrollments' => $enrollments,
             'batches' => $batches,
-            'filters' => $request->only(['batch_id']),
+            'filters' => $request->only(['batch_id', 'status']),
         ]);
     }
 

@@ -1,14 +1,154 @@
-import { Head, router } from '@inertiajs/react'; import { Button } from '@/components/ui/button'; import { useState } from 'react';
-export default function Index({ topics, chapters, filters }: any) {
-    const [chapterId, setChapterId] = useState(filters.chapter_id || '');
-    return (<><Head title="Topics" /><div className="flex h-full flex-1 flex-col gap-4 p-6">
-        <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Topics</h1><Button onClick={() => router.visit(`/tenant/topics/create${chapterId?`?chapter_id=${chapterId}`:''}`)}>New Topic</Button></div>
-        <form onSubmit={e => { e.preventDefault(); router.get('/tenant/topics', { chapter_id: chapterId }, { preserveState: true }); }} className="flex items-center gap-2">
-            <select value={chapterId} onChange={e => setChapterId(e.target.value)} className="flex h-10 w-[350px] rounded-md border border-input bg-background px-3 py-2 text-sm"><option value="">All Chapters</option>{chapters.map((ch:any)=><option key={ch.id} value={ch.id}>{ch.chapter_title} ({ch.course?.name})</option>)}</select>
-            <Button type="submit" variant="secondary">Filter</Button></form>
-        <div className="rounded-md border bg-card"><table className="w-full text-sm"><thead><tr className="border-b"><th className="h-12 px-4 text-left font-medium">Order</th><th className="h-12 px-4 text-left font-medium">Title</th><th className="h-12 px-4 text-left font-medium">Chapter</th><th className="h-12 px-4 text-left font-medium">Video</th><th className="h-12 px-4 text-right font-medium">Actions</th></tr></thead>
-        <tbody>{topics.data.map((t:any) => (<tr key={t.id} className="border-b"><td className="p-4 font-mono text-muted-foreground">{t.order_index}</td><td className="p-4 font-medium">{t.topic_title}</td><td className="p-4"><div className="text-sm">{t.chapter?.chapter_title}</div><div className="text-xs text-muted-foreground">{t.chapter?.course?.name}</div></td><td className="p-4">{t.video_url ? <a href={t.video_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline text-xs">View</a> : <span className="text-muted-foreground text-xs">—</span>}</td><td className="p-4 text-right flex gap-2 justify-end"><Button variant="outline" size="sm" onClick={() => router.visit(`/tenant/topics/${t.id}/edit`)}>Edit</Button><Button variant="destructive" size="sm" onClick={() => { if(confirm('Delete?')) router.delete(`/tenant/topics/${t.id}`); }}>Delete</Button></td></tr>))}
-        {topics.data.length===0 && <tr><td colSpan={5} className="p-4 text-center text-muted-foreground">No topics.</td></tr>}</tbody></table></div>
-        <div className="flex justify-end gap-2">{topics.links.map((l:any,k:number) => <Button key={k} variant={l.active?"default":"outline"} disabled={!l.url} dangerouslySetInnerHTML={{__html:l.label}} onClick={() => l.url && router.visit(l.url)} size="sm" />)}</div>
-    </div></>);
+import { Head, Link, router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Filter, Plus, Pencil, Trash2, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+
+export default function TopicsIndex({ topics, chapters, filters }: any) {
+    const [chapterId, setChapterId] = useState(filters.chapter_id || 'all');
+
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get('/tenant/topics', { chapter_id: chapterId === 'all' ? '' : chapterId }, { preserveState: true });
+    };
+
+    const handleDelete = (id: number) => {
+        if (confirm('Are you sure you want to delete this topic?')) {
+            router.delete(`/tenant/topics/${id}`);
+        }
+    };
+
+    return (
+        <>
+            <Head title="Topics" />
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+                            <span className="text-primary">📝</span>
+                            Topics
+                        </h1>
+                        <p className="text-muted-foreground mt-1">Manage lesson topics within chapters</p>
+                    </div>
+                    <Button asChild>
+                        <Link href={`/tenant/topics/create${chapterId !== 'all' ? `?chapter_id=${chapterId}` : ''}`}>
+                            <Plus className="h-4 w-4 mr-2" />
+                            New Topic
+                        </Link>
+                    </Button>
+                </div>
+
+                {/* Filters */}
+                <form onSubmit={handleFilter} className="flex flex-wrap items-center gap-3">
+                    <Filter className="h-4 w-4 text-muted-foreground" />
+                    <Select value={chapterId} onValueChange={setChapterId}>
+                        <SelectTrigger className="w-[320px]">
+                            <SelectValue placeholder="All Chapters" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Chapters</SelectItem>
+                            {chapters.map((ch: any) => (
+                                <SelectItem key={ch.id} value={ch.id.toString()}>
+                                    {ch.chapter_title} — {ch.course?.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Button type="submit" variant="secondary">Apply Filter</Button>
+                    {chapterId !== 'all' && (
+                        <Button type="button" variant="ghost" onClick={() => { setChapterId('all'); router.get('/tenant/topics', {}, { preserveState: true }); }}>
+                            Clear
+                        </Button>
+                    )}
+                </form>
+
+                {/* Table */}
+                <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+                    <div className="relative w-full overflow-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-b bg-muted/50">
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground w-16">#</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Topic Title</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Chapter</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Course</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Video</th>
+                                    <th className="h-12 px-4 text-right font-semibold text-muted-foreground">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {topics.data.map((topic: any) => (
+                                    <tr key={topic.id} className="border-b hover:bg-muted/30 transition-colors">
+                                        <td className="p-4 font-mono text-muted-foreground text-xs">{topic.order_index}</td>
+                                        <td className="p-4 font-semibold">{topic.topic_title}</td>
+                                        <td className="p-4 text-muted-foreground">{topic.chapter?.chapter_title}</td>
+                                        <td className="p-4 text-muted-foreground text-xs">{topic.chapter?.course?.name}</td>
+                                        <td className="p-4">
+                                            {topic.video_url ? (
+                                                <a
+                                                    href={topic.video_url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex items-center gap-1 text-primary hover:underline text-xs"
+                                                >
+                                                    <ExternalLink className="h-3 w-3" />
+                                                    View
+                                                </a>
+                                            ) : (
+                                                <span className="text-muted-foreground text-xs">—</span>
+                                            )}
+                                        </td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Button variant="ghost" size="icon" asChild>
+                                                    <Link href={`/tenant/topics/${topic.id}/edit`}>
+                                                        <Pencil className="h-4 w-4" />
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                    onClick={() => handleDelete(topic.id)}
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {topics.data.length === 0 && (
+                                    <tr>
+                                        <td colSpan={6} className="h-24 text-center text-muted-foreground italic">
+                                            No topics found. Select a chapter or create a new topic.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {/* Pagination */}
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                        Showing {topics.from ?? 0}–{topics.to ?? 0} of {topics.total} topics
+                    </p>
+                    <div className="flex items-center gap-1">
+                        {topics.links.map((link: any, index: number) => (
+                            <Button
+                                key={index}
+                                variant={link.active ? 'default' : 'outline'}
+                                size="sm"
+                                disabled={!link.url}
+                                onClick={() => link.url && router.visit(link.url)}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }

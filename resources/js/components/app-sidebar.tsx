@@ -66,19 +66,6 @@ const examNavItems: NavItem[] = [
     { title: 'Results', href: '/admin/results', icon: Award },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
     const { auth } = usePage<{ auth: Auth }>().props;
     const isAdmin = auth.user?.role === 'admin' || auth.user?.role?.name === 'admin';
@@ -107,20 +94,46 @@ export function AppSidebar() {
                         <NavMain items={adminNavItems} label="System Administration" />
                     </>
                 )}
-                {/* Tenant navigation for users that belong to a tenant */}
+                {/* Tenant navigation for users that belong to a tenant * */}
                 {auth.user?.tenant_id && (
-                    <NavMain
-                        items={[
-                            { title: 'Tenant Dashboard', href: '/tenant/dashboard', icon: LayoutGrid },
-                            { title: 'Users', href: '/tenant/users', icon: Users },
-                        ]}
-                        label="Tenant"
-                    />
+                    <>
+                        <NavMain
+                            items={[
+                                { title: 'Dashboard', href: '/tenant/dashboard', icon: LayoutGrid },
+                                { title: 'Users', href: '/tenant/users', icon: Users },
+                            ]}
+                            label="Tenant"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Courses', href: '/tenant/courses', icon: BookOpen },
+                                { title: 'Batches', href: '/tenant/batches', icon: Users },
+                                { title: 'Enrollments', href: '/tenant/enrollments', icon: GraduationCap },
+                                { title: 'Chapters', href: '/tenant/chapters', icon: BookOpen },
+                                { title: 'Topics', href: '/tenant/topics', icon: BookOpen },
+                                { title: 'Class Sessions', href: '/tenant/class-sessions', icon: Calendar },
+                                { title: 'Attendance', href: '/tenant/attendances', icon: CheckSquare },
+                            ]}
+                            label="Academic"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Fee Structures', href: '/tenant/fee-structures', icon: FileText },
+                            ]}
+                            label="Financials"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Exams', href: '/tenant/exams', icon: FileEdit },
+                                { title: 'Results', href: '/tenant/results', icon: Award },
+                            ]}
+                            label="Exams & Results"
+                        />
+                    </>
                 )}
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

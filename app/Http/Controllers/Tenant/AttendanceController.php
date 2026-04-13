@@ -15,6 +15,7 @@ class AttendanceController extends Controller
     {
         $attendances = Attendance::with(['classSession.batch', 'student'])
             ->when($request->input('session_id'), fn ($q, $s) => $q->where('class_session_id', $s))
+            ->when($request->input('status'), fn ($q, $s) => $q->where('status', $s))
             ->latest()
             ->paginate(15)
             ->withQueryString();
@@ -24,7 +25,7 @@ class AttendanceController extends Controller
         return Inertia::render('tenant/attendances/Index', [
             'attendances' => $attendances,
             'sessions' => $sessions,
-            'filters' => $request->only(['session_id']),
+            'filters' => $request->only(['session_id', 'status']),
         ]);
     }
 

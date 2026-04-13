@@ -1,16 +1,162 @@
-import { Head, router } from '@inertiajs/react'; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input'; import { useState } from 'react';
-export default function Index({ exams, batches, filters }: any) {
+import { Head, Link, router } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Search, Plus, Pencil, Trash2, FileEdit } from 'lucide-react';
+import { useState } from 'react';
+
+export default function ExamsIndex({ exams, batches, filters }: any) {
     const [search, setSearch] = useState(filters.search || '');
-    const [batchId, setBatchId] = useState(filters.batch_id || '');
-    return (<><Head title="Exams" /><div className="flex h-full flex-1 flex-col gap-4 p-6">
-        <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Exams</h1><Button onClick={() => router.visit('/tenant/exams/create')}>Create Exam</Button></div>
-        <form onSubmit={e => { e.preventDefault(); router.get('/tenant/exams', { search, batch_id: batchId }, { preserveState: true }); }} className="flex items-center gap-2">
-            <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search..." className="max-w-xs" />
-            <select value={batchId} onChange={e => setBatchId(e.target.value)} className="flex h-10 w-[200px] rounded-md border border-input bg-background px-3 py-2 text-sm"><option value="">All Batches</option>{batches.map((b:any)=><option key={b.id} value={b.id}>{b.name}</option>)}</select>
-            <Button type="submit" variant="secondary">Filter</Button></form>
-        <div className="rounded-md border bg-card"><table className="w-full text-sm"><thead><tr className="border-b"><th className="h-12 px-4 text-left font-medium">Title</th><th className="h-12 px-4 text-left font-medium">Batch</th><th className="h-12 px-4 text-left font-medium">Date</th><th className="h-12 px-4 text-left font-medium">Marks (Max / Pass)</th><th className="h-12 px-4 text-right font-medium">Actions</th></tr></thead>
-        <tbody>{exams.data.map((e:any) => (<tr key={e.id} className="border-b"><td className="p-4 font-medium">{e.title}</td><td className="p-4 text-muted-foreground">{e.batch?.name}</td><td className="p-4">{e.exam_date}</td><td className="p-4">{e.max_marks} / {e.passing_marks||'—'}</td><td className="p-4 text-right flex gap-2 justify-end"><Button variant="outline" size="sm" onClick={() => router.visit(`/tenant/results/create?exam_id=${e.id}`)}>Enter Results</Button><Button variant="outline" size="sm" onClick={() => router.visit(`/tenant/exams/${e.id}/edit`)}>Edit</Button><Button variant="destructive" size="sm" onClick={() => { if(confirm('Delete?')) router.delete(`/tenant/exams/${e.id}`); }}>Delete</Button></td></tr>))}
-        {exams.data.length===0 && <tr><td colSpan={5} className="p-4 text-center text-muted-foreground">No exams found.</td></tr>}</tbody></table></div>
-        <div className="flex justify-end gap-2">{exams.links.map((l:any,k:number) => <Button key={k} variant={l.active?"default":"outline"} disabled={!l.url} dangerouslySetInnerHTML={{__html:l.label}} onClick={() => l.url && router.visit(l.url)} size="sm" />)}</div>
-    </div></>);
+    const [batchId, setBatchId] = useState(filters.batch_id || 'all');
+
+    const handleFilter = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get('/tenant/exams', {
+            search,
+            batch_id: batchId === 'all' ? '' : batchId,
+        }, { preserveState: true });
+    };
+
+    const handleDelete = (id: number) => {
+        if (confirm('Are you sure you want to delete this exam?')) {
+            router.delete(`/tenant/exams/${id}`);
+        }
+    };
+
+    return (
+        <>
+            <Head title="Exams" />
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                {/* Header */}
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+                            <FileEdit className="h-7 w-7 text-primary" />
+                            Exams
+                        </h1>
+                        <p className="text-muted-foreground mt-1">Create and manage exams for your batches</p>
+                    </div>
+                    <Button asChild>
+                        <Link href="/tenant/exams/create">
+                            <Plus className="h-4 w-4 mr-2" />
+                            Create Exam
+                        </Link>
+                    </Button>
+                </div>
+
+                {/* Search & Filter */}
+                <form onSubmit={handleFilter} className="flex flex-wrap gap-3 items-center">
+                    <div className="relative w-64">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search exams..."
+                            className="pl-9"
+                        />
+                    </div>
+                    <Select value={batchId} onValueChange={setBatchId}>
+                        <SelectTrigger className="w-[220px]">
+                            <SelectValue placeholder="All Batches" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Batches</SelectItem>
+                            {batches.map((b: any) => (
+                                <SelectItem key={b.id} value={b.id.toString()}>{b.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Button type="submit" variant="secondary">Search</Button>
+                    {(search || batchId !== 'all') && (
+                        <Button type="button" variant="ghost" onClick={() => {
+                            setSearch('');
+                            setBatchId('all');
+                            router.get('/tenant/exams', {}, { preserveState: true });
+                        }}>
+                            Clear
+                        </Button>
+                    )}
+                </form>
+
+                {/* Table */}
+                <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+                    <div className="relative w-full overflow-auto">
+                        <table className="w-full text-sm">
+                            <thead>
+                                <tr className="border-b bg-muted/50">
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Exam Title</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Batch</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Date</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Max Marks</th>
+                                    <th className="h-12 px-4 text-left font-semibold text-muted-foreground">Passing Marks</th>
+                                    <th className="h-12 px-4 text-right font-semibold text-muted-foreground">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {exams.data.map((exam: any) => (
+                                    <tr key={exam.id} className="border-b hover:bg-muted/30 transition-colors">
+                                        <td className="p-4 font-semibold">{exam.title}</td>
+                                        <td className="p-4 text-muted-foreground">{exam.batch?.name || '—'}</td>
+                                        <td className="p-4">
+                                            {exam.exam_date ? new Date(exam.exam_date).toLocaleDateString() : '—'}
+                                        </td>
+                                        <td className="p-4 font-medium">{exam.max_marks}</td>
+                                        <td className="p-4 text-muted-foreground">{exam.passing_marks ?? '—'}</td>
+                                        <td className="p-4 text-right">
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Button variant="outline" size="sm" asChild>
+                                                    <Link href={`/tenant/results/create?exam_id=${exam.id}`}>
+                                                        Enter Results
+                                                    </Link>
+                                                </Button>
+                                                <Button variant="ghost" size="icon" asChild>
+                                                    <Link href={`/tenant/exams/${exam.id}/edit`}>
+                                                        <Pencil className="h-4 w-4" />
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                                    onClick={() => handleDelete(exam.id)}
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {exams.data.length === 0 && (
+                                    <tr>
+                                        <td colSpan={6} className="h-24 text-center text-muted-foreground italic">
+                                            No exams found. Create an exam to evaluate your students.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {/* Pagination */}
+                <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                        Showing {exams.from ?? 0}–{exams.to ?? 0} of {exams.total} exams
+                    </p>
+                    <div className="flex items-center gap-1">
+                        {exams.links.map((link: any, index: number) => (
+                            <Button
+                                key={index}
+                                variant={link.active ? 'default' : 'outline'}
+                                size="sm"
+                                disabled={!link.url}
+                                onClick={() => link.url && router.visit(link.url)}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }
