@@ -39,6 +39,7 @@ Route::middleware([TenantResolver::class])->group(function () {
         ->prefix('tenant')
         ->name('tenant.')
         ->group(function () {
+            Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardController::class, 'index'])->name('dashboard');
             Route::get('users', [UserController::class, 'index'])->name('users.index');
             Route::post('users', [UserController::class, 'store'])->name('users.store');
             Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');

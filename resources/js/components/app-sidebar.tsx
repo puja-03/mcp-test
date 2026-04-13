@@ -68,7 +68,12 @@ const examNavItems: NavItem[] = [
 
 export function AppSidebar() {
     const { auth } = usePage<{ auth: Auth }>().props;
-    const isAdmin = auth.user?.role === 'admin' || auth.user?.role?.name === 'admin';
+    // Role extraction based on nested structure or string
+    const role = (auth.user?.role && typeof auth.user.role === 'object') ? (auth.user.role as any).name : auth.user?.role;
+    const isAdmin = role === 'admin';
+    const isTenantAdmin = role === 'tenant-admin';
+    const isInstructor = role === 'instructor';
+    const isStudent = role === 'student';
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -86,6 +91,7 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <NavMain items={mainNavItems} />
+                
                 {isAdmin && (
                     <>
                         <NavMain items={academicNavItems} label="Academic" />
@@ -94,8 +100,8 @@ export function AppSidebar() {
                         <NavMain items={adminNavItems} label="System Administration" />
                     </>
                 )}
-                {/* Tenant navigation for users that belong to a tenant * */}
-                {auth.user?.tenant_id && (
+                
+                {isTenantAdmin && (
                     <>
                         <NavMain
                             items={[
@@ -128,6 +134,37 @@ export function AppSidebar() {
                                 { title: 'Results', href: '/tenant/results', icon: Award },
                             ]}
                             label="Exams & Results"
+                        />
+                    </>
+                )}
+
+                {isInstructor && (
+                    <>
+                        <NavMain
+                            items={[
+                                { title: 'Dashboard', href: '/instructor/dashboard', icon: LayoutGrid },
+                            ]}
+                            label="Instructor Menu"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Courses', href: '/instructor/courses', icon: BookOpen },
+                                { title: 'Chapters', href: '/instructor/chapters', icon: BookOpen },
+                                { title: 'Topics', href: '/instructor/topics', icon: BookOpen },
+                            ]}
+                            label="Academic"
+                        />
+                    </>
+                )}
+
+                {isStudent && (
+                    <>
+                        <NavMain
+                            items={[
+                                { title: 'Dashboard', href: '/student/dashboard', icon: LayoutGrid },
+                                { title: 'Courses', href: '/student/courses', icon: BookOpen },
+                            ]}
+                            label="Student Menu"
                         />
                     </>
                 )}

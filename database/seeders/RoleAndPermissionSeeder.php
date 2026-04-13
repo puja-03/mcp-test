@@ -82,6 +82,7 @@ class RoleAndPermissionSeeder extends Seeder
                 'view-courses',
                 'view-chapters',
                 'view-topics',
+                ''
             ])->pluck('id')
         );
 
