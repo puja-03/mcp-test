@@ -66,6 +66,9 @@ Route::middleware([TenantResolver::class])->group(function () {
             Route::resource('courses', \App\Http\Controllers\Instructor\CourseController::class)->only(['index', 'show', 'edit', 'update']);
             Route::resource('chapters', \App\Http\Controllers\Instructor\ChapterController::class)->except(['show']);
             Route::resource('topics', \App\Http\Controllers\Instructor\TopicController::class)->except(['show']);
+            Route::resource('attendances', \App\Http\Controllers\Instructor\AttendanceController::class)->except(['show']);
+            Route::resource('exams', \App\Http\Controllers\Instructor\ExamController::class)->except(['show']);
+            Route::resource('results', \App\Http\Controllers\Instructor\ResultController::class)->except(['show']);
             Route::get('profile', [\App\Http\Controllers\Instructor\ProfileController::class, 'edit'])->name('profile.edit');
             Route::put('profile', [\App\Http\Controllers\Instructor\ProfileController::class, 'update'])->name('profile.update');
         });

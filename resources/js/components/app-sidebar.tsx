@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users, GraduationCap, Calendar, CheckSquare, CreditCard, DollarSign, FileEdit, Award, FileText } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Shield, Key, Users, GraduationCap, Calendar, CheckSquare, CreditCard, DollarSign, FileEdit, Award, FileText, UserCircle } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -143,6 +143,7 @@ export function AppSidebar() {
                         <NavMain
                             items={[
                                 { title: 'Dashboard', href: '/instructor/dashboard', icon: LayoutGrid },
+                                { title: 'Profile', href: '/instructor/profile', icon: UserCircle },
                             ]}
                             label="Instructor Menu"
                         />
@@ -151,8 +152,16 @@ export function AppSidebar() {
                                 { title: 'Courses', href: '/instructor/courses', icon: BookOpen },
                                 { title: 'Chapters', href: '/instructor/chapters', icon: BookOpen },
                                 { title: 'Topics', href: '/instructor/topics', icon: BookOpen },
+                                { title: 'Attendances', href: '/instructor/attendances', icon: CheckSquare },
                             ]}
                             label="Academic"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Exams', href: '/instructor/exams', icon: FileEdit },
+                                { title: 'Results', href: '/instructor/results', icon: Award },
+                            ]}
+                            label="Exams & Results"
                         />
                     </>
                 )}

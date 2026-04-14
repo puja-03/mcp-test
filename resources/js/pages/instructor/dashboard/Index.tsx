@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Users, Clock, Calendar } from 'lucide-react';
+import { BookOpen, Users, Clock, Calendar, GraduationCap, School, CreditCard } from 'lucide-react';
 
-export default function InstructorDashboard({ stats }: { stats: any }) {
+export default function InstructorDashboard({ stats, tenantStats }: { stats: any, tenantStats?: any }) {
     const statItems = [
         { title: 'My Courses', value: stats.courses, icon: BookOpen, color: 'text-blue-600' },
-        { title: 'Active Students', value: stats.students, icon: Users, color: 'text-green-600' },
+        { title: 'My Active Students', value: stats.students, icon: Users, color: 'text-green-600' },
     ];
 
     return (
@@ -33,6 +33,50 @@ export default function InstructorDashboard({ stats }: { stats: any }) {
                         </Card>
                     ))}
                 </div>
+
+                {tenantStats && (
+                    <>
+                        <h2 className="text-xl font-bold tracking-tight mt-4">Institute Overview</h2>
+                        <div className="grid gap-4 md:grid-cols-4">
+                            <Card className="overflow-hidden border-none shadow-md bg-white">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+                                    <Users className="h-4 w-4 text-purple-600" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{tenantStats.students}</div>
+                                </CardContent>
+                            </Card>
+                            <Card className="overflow-hidden border-none shadow-md bg-white">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Total Enrollments</CardTitle>
+                                    <GraduationCap className="h-4 w-4 text-indigo-600" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{tenantStats.enrollments}</div>
+                                </CardContent>
+                            </Card>
+                            <Card className="overflow-hidden border-none shadow-md bg-white">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Class Sessions</CardTitle>
+                                    <School className="h-4 w-4 text-orange-600" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{tenantStats.classSessions}</div>
+                                </CardContent>
+                            </Card>
+                            <Card className="overflow-hidden border-none shadow-md bg-white">
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">Fee Structures</CardTitle>
+                                    <CreditCard className="h-4 w-4 text-emerald-600" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{tenantStats.feeStructures}</div>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </>
+                )}
 
                 <div className="grid gap-4 md:grid-cols-7">
                     <Card className="md:col-span-4 border-none shadow-md">
