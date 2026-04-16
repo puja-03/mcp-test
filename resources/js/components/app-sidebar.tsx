@@ -142,7 +142,7 @@ export function AppSidebar() {
                     <>
                         <NavMain
                             items={[
-                                { title: 'Dashboard', href: '/instructor/dashboard', icon: LayoutGrid },
+                                { title: 'Students', href: '/instructor/users', icon: Users },
                                 { title: 'Profile', href: '/instructor/profile', icon: UserCircle },
                             ]}
                             label="Instructor Menu"
@@ -155,6 +155,14 @@ export function AppSidebar() {
                                 { title: 'Attendances', href: '/instructor/attendances', icon: CheckSquare },
                             ]}
                             label="Academic"
+                        />
+                        <NavMain
+                            items={[
+                                { title: 'Fee Structures', href: '/instructor/fee-structures', icon: FileText },
+                                { title: 'Installments', href: '/instructor/installments', icon: CreditCard },
+                                { title: 'Payments', href: '/instructor/payments', icon: DollarSign },
+                            ]}
+                            label="Financials"
                         />
                         <NavMain
                             items={[

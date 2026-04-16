@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\TenantUserController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\UserRoleController;
+use App\Http\Controllers\Instructor\ProfileController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\UserController;
 use App\Http\Middleware\CheckRole;
@@ -35,57 +36,60 @@ Route::middleware([TenantResolver::class])->group(function () {
     });
 
     // ─── TENANT ADMIN PANEL ───
-    Route::middleware(['auth', 'verified', CheckRole::class . ':tenant-admin'])
+    Route::middleware(['auth', 'verified', CheckRole::class.':tenant-admin'])
         ->prefix('tenant')
         ->name('tenant.')
         ->group(function () {
-            Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardController::class, 'index'])->name('dashboard');
+            Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
             Route::get('users', [UserController::class, 'index'])->name('users.index');
             Route::post('users', [UserController::class, 'store'])->name('users.store');
             Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
             Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-            Route::resource('courses', \App\Http\Controllers\Tenant\CourseController::class)->except(['show']);
-            Route::resource('batches', \App\Http\Controllers\Tenant\BatchController::class)->except(['show']);
-            Route::resource('enrollments', \App\Http\Controllers\Tenant\EnrollmentController::class)->except(['show']);
-            Route::resource('chapters', \App\Http\Controllers\Tenant\ChapterController::class)->except(['show']);
-            Route::resource('topics', \App\Http\Controllers\Tenant\TopicController::class)->except(['show']);
-            Route::resource('class-sessions', \App\Http\Controllers\Tenant\ClassSessionController::class)->except(['show']);
-            Route::resource('attendances', \App\Http\Controllers\Tenant\AttendanceController::class)->except(['show', 'edit', 'update']);
-            Route::resource('fee-structures', \App\Http\Controllers\Tenant\FeeStructureController::class)->except(['show']);
-            Route::resource('exams', \App\Http\Controllers\Tenant\ExamController::class)->except(['show']);
-            Route::resource('results', \App\Http\Controllers\Tenant\ResultController::class)->except(['show']);
+            Route::resource('courses', App\Http\Controllers\Tenant\CourseController::class)->except(['show']);
+            Route::resource('batches', App\Http\Controllers\Tenant\BatchController::class)->except(['show']);
+            Route::resource('enrollments', App\Http\Controllers\Tenant\EnrollmentController::class)->except(['show']);
+            Route::resource('chapters', App\Http\Controllers\Tenant\ChapterController::class)->except(['show']);
+            Route::resource('topics', App\Http\Controllers\Tenant\TopicController::class)->except(['show']);
+            Route::resource('class-sessions', App\Http\Controllers\Tenant\ClassSessionController::class)->except(['show']);
+            Route::resource('attendances', App\Http\Controllers\Tenant\AttendanceController::class)->except(['show', 'edit', 'update']);
+            Route::resource('fee-structures', App\Http\Controllers\Tenant\FeeStructureController::class)->except(['show']);
+            Route::resource('exams', App\Http\Controllers\Tenant\ExamController::class)->except(['show']);
+            Route::resource('results', App\Http\Controllers\Tenant\ResultController::class)->except(['show']);
         });
 
     // ─── INSTRUCTOR PANEL ───
-    Route::middleware(['auth', 'verified', CheckRole::class . ':instructor'])
+    Route::middleware(['auth', 'verified', CheckRole::class.':instructor'])
         ->prefix('instructor')
         ->name('instructor.')
         ->group(function () {
-            Route::get('dashboard', [\App\Http\Controllers\Instructor\DashboardController::class, 'index'])->name('dashboard');
-            Route::resource('courses', \App\Http\Controllers\Instructor\CourseController::class)->only(['index', 'show', 'edit', 'update']);
-            Route::resource('chapters', \App\Http\Controllers\Instructor\ChapterController::class)->except(['show']);
-            Route::resource('topics', \App\Http\Controllers\Instructor\TopicController::class)->except(['show']);
-            Route::resource('attendances', \App\Http\Controllers\Instructor\AttendanceController::class)->except(['show']);
-            Route::resource('exams', \App\Http\Controllers\Instructor\ExamController::class)->except(['show']);
-            Route::resource('results', \App\Http\Controllers\Instructor\ResultController::class)->except(['show']);
-            Route::get('profile', [\App\Http\Controllers\Instructor\ProfileController::class, 'edit'])->name('profile.edit');
-            Route::put('profile', [\App\Http\Controllers\Instructor\ProfileController::class, 'update'])->name('profile.update');
+            Route::resource('users', App\Http\Controllers\Instructor\UserController::class)->only(['index', 'show']);
+            Route::resource('courses', App\Http\Controllers\Instructor\CourseController::class)->only(['index', 'show', 'edit', 'update']);
+            Route::resource('chapters', App\Http\Controllers\Instructor\ChapterController::class)->except(['show']);
+            Route::resource('topics', App\Http\Controllers\Instructor\TopicController::class)->except(['show']);
+            Route::resource('attendances', App\Http\Controllers\Instructor\AttendanceController::class)->except(['show']);
+            Route::resource('fee-structures', App\Http\Controllers\Instructor\FeeStructureController::class)->except(['show']);
+            Route::resource('installments', App\Http\Controllers\Instructor\InstallmentController::class)->except(['show']);
+            Route::resource('payments', App\Http\Controllers\Instructor\PaymentController::class)->except(['show']);
+            Route::resource('exams', App\Http\Controllers\Instructor\ExamController::class)->except(['show']);
+            Route::resource('results', App\Http\Controllers\Instructor\ResultController::class)->except(['show']);
+            Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+            Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
         });
 
     // ─── STUDENT PANEL ───
-    Route::middleware(['auth', 'verified', CheckRole::class . ':student'])
+    Route::middleware(['auth', 'verified', CheckRole::class.':student'])
         ->prefix('student')
         ->name('student.')
         ->group(function () {
-            Route::get('dashboard', [\App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
-            Route::get('courses', [\App\Http\Controllers\Student\CourseController::class, 'index'])->name('courses.index');
-            Route::get('courses/{course}', [\App\Http\Controllers\Student\CourseController::class, 'show'])->name('courses.show');
-            Route::get('topics/{topic}', [\App\Http\Controllers\Student\TopicController::class, 'show'])->name('topics.show');
+            Route::get('dashboard', [App\Http\Controllers\Student\DashboardController::class, 'index'])->name('dashboard');
+            Route::get('courses', [App\Http\Controllers\Student\CourseController::class, 'index'])->name('courses.index');
+            Route::get('courses/{course}', [App\Http\Controllers\Student\CourseController::class, 'show'])->name('courses.show');
+            Route::get('topics/{topic}', [App\Http\Controllers\Student\TopicController::class, 'show'])->name('topics.show');
         });
 
     // ─── SUPER ADMIN PANEL ───
-    Route::middleware(['auth', 'verified', CheckRole::class . ':admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['auth', 'verified', CheckRole::class.':admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/tenants', [TenantController::class, 'index'])->name('tenants.index');
         Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
         Route::post('/tenants', [TenantController::class, 'store'])->name('tenants.store');
@@ -120,5 +124,5 @@ Route::middleware([TenantResolver::class])->group(function () {
         Route::resource('results', ResultController::class)->except(['show']);
     });
 
-    require __DIR__ . '/settings.php';
+    require __DIR__.'/settings.php';
 });
