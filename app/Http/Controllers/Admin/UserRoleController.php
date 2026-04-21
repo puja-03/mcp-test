@@ -10,26 +10,41 @@ use Inertia\Inertia;
 
 class UserRoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('role')->get()->map(function ($user) {
-            return [
+        $users = User::with('role')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->input('role_id'), function ($query, $roleId) {
+                if ($roleId === 'none') {
+                    $query->whereNull('role_id');
+                } else {
+                    $query->where('role_id', $roleId);
+                }
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString()
+            ->through(fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role_id' => $user->role_id,
                 'role' => $user->role ? ['id' => $user->role->id, 'name' => $user->role->name] : null,
                 'created_at' => $user->created_at,
-            ];
-        });
+            ]);
 
         $roles = Role::all();
 
         return Inertia::render('admin/users', [
             'users' => $users,
             'roles' => $roles,
+            'filters' => $request->only(['search', 'role_id']),
         ]);
-
     }
 
     public function update(Request $request, User $user)
