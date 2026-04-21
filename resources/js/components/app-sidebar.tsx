@@ -76,7 +76,7 @@ export function AppSidebar() {
     const isStudent = role === 'student';
 
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="icon" variant="sidebar">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>

@@ -15,9 +15,9 @@ type Stat = {
 
 export default function Dashboard({ stats }: { stats: Stat }) {
     return (
-        <AppLayout>
+        <>
             <Head title="Admin Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6">
+            <div className="flex h-full flex-1 flex-col gap-4 p-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
                     <p className="text-muted-foreground">Overview of your coaching SaaS platform.</p>
@@ -160,6 +160,6 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                     </Card>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
