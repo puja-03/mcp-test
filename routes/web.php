@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TenantUserController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\UserRoleController;
 use App\Http\Controllers\Instructor\ProfileController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\UserController;
 use App\Http\Middleware\CheckRole;
@@ -32,7 +33,21 @@ Route::middleware([TenantResolver::class])->group(function () {
     ])->name('home');
 
     Route::middleware(['auth', 'verified'])->group(function () {
-        Route::inertia('dashboard', 'dashboard')->name('dashboard');
+        Route::get('dashboard', function () {
+            if (auth()->user()->hasRole('admin')) {
+                return redirect()->route('admin.dashboard');
+            }
+            if (auth()->user()->hasRole('tenant-admin')) {
+                return redirect()->route('tenant.dashboard');
+            }
+            if (auth()->user()->hasRole('instructor')) {
+                return redirect()->route('instructor.profile.edit');
+            }
+            if (auth()->user()->hasRole('student')) {
+                return redirect()->route('student.dashboard');
+            }
+            return redirect()->route('home');
+        })->name('dashboard');
     });
 
     // ─── TENANT ADMIN PANEL ───
@@ -90,6 +105,7 @@ Route::middleware([TenantResolver::class])->group(function () {
 
     // ─── SUPER ADMIN PANEL ───
     Route::middleware(['auth', 'verified', CheckRole::class.':admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/tenants', [TenantController::class, 'index'])->name('tenants.index');
         Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
         Route::post('/tenants', [TenantController::class, 'store'])->name('tenants.store');
