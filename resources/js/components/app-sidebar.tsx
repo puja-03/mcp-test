@@ -106,7 +106,6 @@ export function AppSidebar() {
                     <>
                         <NavMain
                             items={[
-                                { title: 'Dashboard', href: '/tenant/dashboard', icon: LayoutGrid },
                                 { title: 'Users', href: '/tenant/users', icon: Users },
                                 { title: 'Instructors', href: '/tenant/instructors', icon: GraduationCap },
                             ]}
@@ -180,7 +179,6 @@ export function AppSidebar() {
                     <>
                         <NavMain
                             items={[
-                                { title: 'Dashboard', href: '/student/dashboard', icon: LayoutGrid },
                                 { title: 'Courses', href: '/student/courses', icon: BookOpen },
                             ]}
                             label="Student Menu"
