@@ -27,6 +27,11 @@ class TenantResolver
             $tenant = Tenant::where('domain', $subdomain)->first();
         }
 
+        // Fallback to authenticated user's tenant if no tenant resolved from host
+        if (!$tenant && auth()->check()) {
+            $tenant = auth()->user()->tenant;
+        }
+
         if ($tenant) {
             app()->instance('currentTenant', $tenant);
         }

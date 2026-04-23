@@ -2,9 +2,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { Search, Plus, Trash2, Edit, User, Mail, GraduationCap } from 'lucide-react';
+import { Search, Plus, Trash2, Edit, User, Mail, GraduationCap, ShieldCheck, ArrowRight, UserPlus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import AppLayout from '@/layouts/app-layout';
 
 type Instructor = {
     id: number;
@@ -33,94 +32,119 @@ export default function Index({ instructors, filters }: { instructors: any; filt
 
     return (
         <>
-            <Head title="Instructors" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Instructors</h1>
-                        <p className="text-muted-foreground font-medium">Manage your teaching staff and their profiles.</p>
+            <Head title="Faculty Management" />
+            <div className="flex h-full flex-1 flex-col gap-8 p-8 bg-muted/10">
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-primary/10 rounded-lg">
+                                <GraduationCap className="h-6 w-6 text-primary" />
+                            </div>
+                            <h1 className="text-3xl font-black tracking-tight">Academic Faculty</h1>
+                        </div>
+                        <p className="text-muted-foreground font-medium">Manage your teaching staff, their specializations, and professional profiles.</p>
                     </div>
-                    <Button asChild className="gap-2 shadow-md">
+                    <Button asChild className="h-12 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[11px] gap-2">
                         <Link href="/tenant/instructors/create">
-                            <Plus className="h-4 w-4" /> Add New Instructor
+                            <UserPlus className="h-4 w-4" />
+                            Register Instructor
                         </Link>
                     </Button>
                 </div>
 
-                {/* Search and Filters */}
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-card p-4 rounded-xl border shadow-sm">
-                    <form onSubmit={handleSearch} className="flex flex-1 gap-2 w-full max-w-lg">
+                {/* Filter & Search Bar */}
+                <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-card p-4 rounded-2xl border shadow-sm ring-1 ring-border/50">
+                    <form onSubmit={handleSearch} className="flex flex-1 gap-2 w-full max-w-2xl">
                         <div className="relative flex-1">
                             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Search by name or email..."
-                                className="pl-10 h-10 border-muted-foreground/20 focus:ring-primary/30"
+                                placeholder="Search by name, email or specialization..."
+                                className="pl-10 h-10 border-muted-foreground/20 font-medium focus:ring-primary/30"
                             />
                         </div>
-                        <Button type="submit" variant="secondary" className="h-10 px-6 font-bold uppercase tracking-wider text-[11px]">Filter Results</Button>
+                        <Button type="submit" variant="secondary" className="h-10 px-6 font-bold uppercase tracking-wider text-[11px]">Find Faculty</Button>
+                        {search && (
+                            <Button type="button" variant="ghost" className="h-10 text-[11px] font-bold uppercase tracking-widest" onClick={() => { setSearch(''); router.get('/tenant/instructors', {}, { preserveState: true }); }}>
+                                Reset
+                            </Button>
+                        )}
                     </form>
-                    <div className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                        {instructors.total} Instructors Found
+                    <div className="hidden lg:flex items-center gap-2 text-xs font-black uppercase tracking-widest text-muted-foreground">
+                        <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                        {instructors.total} Verified Educators
                     </div>
                 </div>
 
-                {/* Instructors Table */}
-                <div className="rounded-xl border bg-card shadow-lg overflow-hidden ring-1 ring-border/50">
+                {/* Instructors Grid/Table */}
+                <div className="rounded-2xl border bg-card shadow-xl overflow-hidden ring-1 ring-border/50">
                     <div className="relative w-full overflow-auto">
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b bg-muted/40">
-                                    <th className="h-14 px-6 text-left font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Instructor Details</th>
-                                    <th className="h-14 px-6 text-left font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Specialization</th>
-                                    <th className="h-14 px-6 text-left font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Experience</th>
-                                    <th className="h-14 px-6 text-left font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Joined</th>
-                                    <th className="h-14 px-6 text-right font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Actions</th>
+                                    <th className="h-14 px-6 text-left font-black text-muted-foreground uppercase tracking-[0.2em] text-[10px]">Instructor Profile</th>
+                                    <th className="h-14 px-6 text-left font-black text-muted-foreground uppercase tracking-[0.2em] text-[10px]">Expertise</th>
+                                    <th className="h-14 px-6 text-left font-black text-muted-foreground uppercase tracking-[0.2em] text-[10px]">Seniority</th>
+                                    <th className="h-14 px-6 text-left font-black text-muted-foreground uppercase tracking-[0.2em] text-[10px]">Joined</th>
+                                    <th className="h-14 px-6 text-right font-black text-muted-foreground uppercase tracking-[0.2em] text-[10px]">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border/50">
                                 {instructors.data.map((item: Instructor) => (
-                                    <tr key={item.id} className="hover:bg-muted/30 transition-all group">
+                                    <tr key={item.id} className="group hover:bg-muted/30 transition-all duration-200">
                                         <td className="p-6">
                                             <div className="flex items-center gap-4">
-                                                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                                                    <User className="h-5 w-5" />
+                                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm border border-primary/10">
+                                                    <User className="h-6 w-6" />
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="font-bold text-foreground text-sm mb-0.5">{item.name}</span>
-                                                    <span className="text-[11px] text-muted-foreground font-medium flex items-center gap-1.5">
-                                                        <Mail className="h-3 w-3" /> {item.email}
+                                                    <span className="font-black text-foreground text-sm group-hover:text-primary transition-colors">{item.name}</span>
+                                                    <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
+                                                        <Mail className="h-3 w-3 text-muted-foreground/60" /> {item.email}
                                                     </span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="p-6">
                                             <div className="flex items-center gap-2">
-                                                <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                                                <span className="font-semibold text-foreground">
-                                                    {item.instructor_profile?.specialization || 'Not set'}
+                                                <div className="p-1.5 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
+                                                    <GraduationCap className="h-4 w-4 text-primary" />
+                                                </div>
+                                                <span className="font-bold text-foreground text-xs uppercase tracking-tight">
+                                                    {item.instructor_profile?.specialization || 'General Faculty'}
                                                 </span>
                                             </div>
                                         </td>
                                         <td className="p-6">
-                                            <Badge variant="outline" className="font-bold bg-muted/20 border-muted-foreground/20">
-                                                {item.instructor_profile?.experience_years ? `${item.instructor_profile.experience_years} Years` : 'N/A'}
+                                            <Badge variant="outline" className="font-black uppercase text-[9px] tracking-widest px-2.5 py-1 bg-muted/20 border-muted-foreground/20 group-hover:border-primary/40 group-hover:text-primary transition-colors">
+                                                {item.instructor_profile?.experience_years ? `${item.instructor_profile.experience_years} Years EXP` : 'New Entry'}
                                             </Badge>
                                         </td>
-                                        <td className="p-6 text-muted-foreground font-medium">
+                                        <td className="p-6 text-muted-foreground font-bold text-xs uppercase tracking-tighter">
                                             {new Date(item.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </td>
                                         <td className="p-6 text-right">
-                                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-1 group-hover:translate-x-0">
-                                                <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg border-muted-foreground/20 hover:border-primary hover:bg-primary/10 hover:text-primary transition-all shadow-sm" asChild>
+                                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Button variant="outline" size="icon" className="h-9 w-9 rounded-lg border-muted-foreground/20 hover:bg-primary hover:text-white hover:border-primary transition-all" asChild title="Edit Profile">
                                                     <Link href={`/tenant/instructors/${item.id}/edit`}>
                                                         <Edit className="h-4 w-4" />
                                                     </Link>
                                                 </Button>
-                                                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg text-destructive hover:bg-destructive shadow-sm hover:text-white transition-all" onClick={() => handleDelete(item.id)}>
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="h-9 w-9 rounded-lg border-muted-foreground/20 text-destructive hover:bg-destructive hover:text-white hover:border-destructive transition-all"
+                                                    onClick={() => handleDelete(item.id)}
+                                                    title="Remove Instructor"
+                                                >
                                                     <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg hover:bg-primary/5 hover:text-primary" asChild>
+                                                    <Link href={`/tenant/instructors/${item.id}`}>
+                                                        <ArrowRight className="h-4 w-4" />
+                                                    </Link>
                                                 </Button>
                                             </div>
                                         </td>
@@ -128,19 +152,14 @@ export default function Index({ instructors, filters }: { instructors: any; filt
                                 ))}
                                 {instructors.data.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="h-40 text-center py-10">
-                                            <div className="flex flex-col items-center gap-3 animate-in fade-in duration-500">
-                                                <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center border-4 border-background shadow-inner">
-                                                    <User className="h-8 w-8 text-muted-foreground opacity-20" />
+                                        <td colSpan={5} className="h-60 text-center py-20">
+                                            <div className="flex flex-col items-center gap-3">
+                                                <div className="p-4 bg-muted rounded-full">
+                                                    <User className="h-10 w-10 text-muted-foreground/40" />
                                                 </div>
-                                                <div>
-                                                    <h3 className="text-lg font-bold text-muted-foreground">No instructors found</h3>
-                                                    <p className="text-xs text-muted-foreground font-medium max-w-[200px] mx-auto">No records match your current search criteria.</p>
-                                                </div>
-                                                <Button asChild variant="outline" size="sm" className="mt-2 font-bold uppercase tracking-wider text-[10px] h-8">
-                                                    <Link href="/tenant/instructors/create">
-                                                        Add First Instructor
-                                                    </Link>
+                                                <p className="text-muted-foreground font-black uppercase tracking-widest text-xs">No faculty members found</p>
+                                                <Button asChild variant="outline" className="mt-2 h-10 font-bold uppercase tracking-widest text-[10px]">
+                                                    <Link href="/tenant/instructors/create">Register First Instructor</Link>
                                                 </Button>
                                             </div>
                                         </td>
@@ -151,21 +170,35 @@ export default function Index({ instructors, filters }: { instructors: any; filt
                     </div>
                 </div>
 
-                {/* Pagination */}
-                <div className="flex items-center justify-center space-x-2 pt-6">
-                    {instructors.links.map((link: any, index: number) => (
-                        <Button
-                            key={index}
-                            variant={link.active ? 'default' : 'outline'}
-                            size="sm"
-                            disabled={!link.url}
-                            className={`h-10 w-10 p-0 font-black text-xs transition-all ${link.active ? 'shadow-lg shadow-primary/20 scale-110' : 'hover:scale-105'}`}
-                            onClick={() => link.url && router.visit(link.url)}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                        />
-                    ))}
+                {/* Pagination Section */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+                    <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                        Displaying <span className="text-foreground">{instructors.from ?? 0}–{instructors.to ?? 0}</span> of <span className="text-foreground">{instructors.total}</span> Faculty Members
+                    </p>
+                    <div className="flex items-center gap-1.5">
+                        {instructors.links.map((link: any, index: number) => (
+                            <Button
+                                key={index}
+                                variant={link.active ? 'default' : 'outline'}
+                                size="sm"
+                                disabled={!link.url}
+                                className={`h-9 w-9 p-0 font-black text-[10px] transition-all ${link.active ? 'shadow-lg shadow-primary/20 scale-110 z-10' : 'hover:scale-105 hover:bg-muted/50'}`}
+                                onClick={() => link.url && router.visit(link.url)}
+                                dangerouslySetInnerHTML={{ __html: link.label }}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </>
     );
 }
+
+Index.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/tenant/instructors',
+        },
+    ],
+};
