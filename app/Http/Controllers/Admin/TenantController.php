@@ -15,7 +15,7 @@ class TenantController extends Controller
     public function index()
     {
         $tenants = Tenant::withCount('users')->get()->map(function ($tenant) {
-            $admin = $tenant->users()->with('role')->whereHas('role', function ($q) {
+            $admin = $tenant->users()->withoutGlobalScopes()->with('role')->whereHas('role', function ($q) {
                 $q->where('name', 'tenant-admin');
             })->first();
 
