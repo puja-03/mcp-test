@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GraduationCap, BookOpen, CheckSquare, Award, User, Mail, Calendar } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Enrollment = {
     id: number;
@@ -47,7 +47,7 @@ type StudentProfile = {
 
 export default function Show({ user }: { user: StudentProfile }) {
     return (
-        <AppLayout>
+        <>
             <Head title={`Student: ${user.name}`} />
             <div className="flex flex-col gap-6 p-6">
                 {/* Header / Profile Info */}
@@ -219,6 +219,6 @@ export default function Show({ user }: { user: StudentProfile }) {
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }

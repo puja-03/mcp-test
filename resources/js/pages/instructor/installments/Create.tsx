@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Save, Calendar as CalendarIcon, DollarSign } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Enrollment = { 
     id: number; 
@@ -29,7 +29,7 @@ export default function Create({ enrollments, feeStructures }: { enrollments: En
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Schedule Installment" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -141,7 +141,7 @@ export default function Create({ enrollments, feeStructures }: { enrollments: En
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
 

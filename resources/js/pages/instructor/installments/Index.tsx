@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search, Plus, CreditCard, User, Calendar, DollarSign, Trash2, Edit, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Installment = {
     id: number;
@@ -52,7 +52,7 @@ export default function Index({ installments, filters }: Props) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Installment Tracking" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
@@ -188,6 +188,6 @@ export default function Index({ installments, filters }: Props) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </>
     );
 }

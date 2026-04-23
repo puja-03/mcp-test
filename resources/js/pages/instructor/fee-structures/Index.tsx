@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search, Plus, FileText, BookOpen, DollarSign, Settings2, Trash2, Edit } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
 
 type FeeStructure = {
     id: number;
@@ -40,7 +39,7 @@ export default function Index({ feeStructures, filters }: Props) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Fee Structures" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
@@ -90,7 +89,7 @@ export default function Index({ feeStructures, filters }: Props) {
                                     <span className="truncate">{fs.course.name}</span>
                                 </div>
                             </div>
-                            
+
                             <div className="p-6 space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
@@ -155,6 +154,6 @@ export default function Index({ feeStructures, filters }: Props) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </>
     );
 }

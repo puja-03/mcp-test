@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Save, Calendar as CalendarIcon, DollarSign, AlertCircle } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Enrollment = { 
     id: number; 
@@ -38,7 +38,7 @@ export default function Edit({ installment, enrollments, feeStructures }: { inst
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Edit Installment" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -148,6 +148,6 @@ export default function Edit({ installment, enrollments, feeStructures }: { inst
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }

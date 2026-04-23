@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search, User, Mail, Calendar, Eye } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+
 
 type UserData = {
     id: number;
@@ -34,7 +34,7 @@ export default function Index({ users, filters }: Props) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="My Students" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
@@ -125,6 +125,6 @@ export default function Index({ users, filters }: Props) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </>
     );
 }

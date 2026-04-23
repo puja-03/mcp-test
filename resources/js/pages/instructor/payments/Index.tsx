@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { Search, Plus, DollarSign, User, Calendar, Receipt, Trash2, Edit, CheckCircle2, Clock, XCircle, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Payment = {
     id: number;
@@ -53,7 +53,7 @@ export default function Index({ payments, filters }: Props) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Payment History" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
@@ -212,6 +212,6 @@ export default function Index({ payments, filters }: Props) {
                     </div>
                 )}
             </div>
-        </AppLayout>
+        </>
     );
 }

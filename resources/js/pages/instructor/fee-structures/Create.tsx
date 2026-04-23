@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Save } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+
 
 type Course = { id: number; name: string };
 
@@ -22,7 +22,7 @@ export default function Create({ courses }: { courses: Course[] }) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Create Fee Structure" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -112,6 +112,6 @@ export default function Create({ courses }: { courses: Course[] }) {
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
