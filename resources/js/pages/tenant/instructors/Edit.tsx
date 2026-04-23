@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Save, User, Mail, Lock, GraduationCap, Briefcase, FileText, Code } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
 
 type Instructor = {
     id: number;
@@ -37,7 +36,7 @@ export default function Edit({ instructor }: { instructor: Instructor }) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title={`Edit Instructor: ${instructor.name}`} />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -145,6 +144,19 @@ export default function Edit({ instructor }: { instructor: Instructor }) {
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
+
+Edit.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/tenant/instructors',
+        },
+        {
+            title: 'Edit',
+            href: '/tenant/instructors/edit',
+        },
+    ],
+};

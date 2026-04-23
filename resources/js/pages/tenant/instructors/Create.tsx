@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, Save, User, Mail, Lock, GraduationCap, Briefcase, FileText, Code } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -24,7 +23,7 @@ export default function Create() {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Add Instructor" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -131,6 +130,19 @@ export default function Create() {
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
+
+Create.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/tenant/instructors',
+        },
+        {
+            title: 'Add New',
+            href: '/tenant/instructors/create',
+        },
+    ],
+};

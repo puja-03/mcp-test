@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Save, User, Mail, Lock, GraduationCap, Briefcase, FileText, Code, Building2 } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+import { ArrowLeft, Save, User, Mail, Lock, GraduationCap, Building2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Create({ tenants }: { tenants: any[] }) {
@@ -26,7 +25,7 @@ export default function Create({ tenants }: { tenants: any[] }) {
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Create Global Instructor" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -74,26 +73,17 @@ export default function Create({ tenants }: { tenants: any[] }) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-2">
                                     <Label htmlFor="name" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Full Name</Label>
-                                    <div className="relative group">
-                                        <User className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                                        <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="e.g. John Doe" className="h-12 pl-10 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
-                                    </div>
+                                    <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} placeholder="e.g. John Doe" className="h-12 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
                                     {errors.name && <p className="text-xs text-destructive font-black mt-1 uppercase tracking-tighter">{errors.name}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="email" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Email Address</Label>
-                                    <div className="relative group">
-                                        <Mail className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                                        <Input id="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} placeholder="john@example.com" className="h-12 pl-10 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
-                                    </div>
+                                    <Input id="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} placeholder="john@example.com" className="h-12 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
                                     {errors.email && <p className="text-xs text-destructive font-black mt-1 uppercase tracking-tighter">{errors.email}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="password" className="text-xs font-black uppercase tracking-widest text-muted-foreground">Initial Password</Label>
-                                    <div className="relative group">
-                                        <Lock className="absolute left-3 top-3.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                                        <Input id="password" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} placeholder="••••••••" className="h-12 pl-10 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
-                                    </div>
+                                    <Input id="password" type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} placeholder="••••••••" className="h-12 bg-muted/30 border-muted-foreground/20 focus:ring-primary/40 font-bold" />
                                     {errors.password && <p className="text-xs text-destructive font-black mt-1 uppercase tracking-tighter">{errors.password}</p>}
                                 </div>
                             </div>
@@ -140,6 +130,19 @@ export default function Create({ tenants }: { tenants: any[] }) {
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
+
+Create.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/admin/instructors',
+        },
+        {
+            title: 'Create',
+            href: '/admin/instructors/create',
+        },
+    ],
+};

@@ -2,9 +2,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { Search, Plus, Trash2, Edit, User, Mail, GraduationCap, Building2, Filter } from 'lucide-react';
+import { Search, Plus, Trash2, Edit, User, Mail, GraduationCap, Building2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import AppLayout from '@/layouts/app-layout';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Instructor = {
@@ -38,7 +37,7 @@ export default function Index({ instructors, tenants, filters }: { instructors: 
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title="Global Instructors" />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center justify-between">
@@ -185,6 +184,15 @@ export default function Index({ instructors, tenants, filters }: { instructors: 
                     ))}
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
+
+Index.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/admin/instructors',
+        },
+    ],
+};

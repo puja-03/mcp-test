@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowLeft, Save, User, Mail, Lock, GraduationCap, Briefcase, FileText, Code, Building2 } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
+import { ArrowLeft, Save, User, GraduationCap, Building2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 type Instructor = {
@@ -40,7 +39,7 @@ export default function Edit({ instructor, tenants }: { instructor: Instructor, 
     };
 
     return (
-        <AppLayout>
+        <>
             <Head title={`Edit Global Instructor: ${instructor.name}`} />
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
                 <div className="flex items-center gap-4">
@@ -145,6 +144,19 @@ export default function Edit({ instructor, tenants }: { instructor: Instructor, 
                     </form>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }
+
+Edit.layout = {
+    breadcrumbs: [
+        {
+            title: 'Instructors',
+            href: '/admin/instructors',
+        },
+        {
+            title: 'Edit',
+            href: '/admin/instructors/edit',
+        },
+    ],
+};
