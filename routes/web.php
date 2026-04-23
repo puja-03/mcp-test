@@ -69,6 +69,7 @@ Route::middleware([TenantResolver::class])->group(function () {
             Route::resource('class-sessions', App\Http\Controllers\Tenant\ClassSessionController::class)->except(['show']);
             Route::resource('attendances', App\Http\Controllers\Tenant\AttendanceController::class)->except(['show', 'edit', 'update']);
             Route::resource('fee-structures', App\Http\Controllers\Tenant\FeeStructureController::class)->except(['show']);
+            Route::resource('instructors', App\Http\Controllers\Tenant\InstructorController::class)->except(['show']);
             Route::resource('exams', App\Http\Controllers\Tenant\ExamController::class)->except(['show']);
             Route::resource('results', App\Http\Controllers\Tenant\ResultController::class)->except(['show']);
         });
@@ -130,7 +131,7 @@ Route::middleware([TenantResolver::class])->group(function () {
         Route::resource('enrollments', EnrollmentController::class)->except(['show']);
         Route::resource('chapters', ChapterController::class)->except(['show']);
         Route::resource('topics', TopicController::class)->except(['show']);
-        Route::resource('instructors', InstructorProfileController::class)->except(['show']);
+        Route::resource('instructors', \App\Http\Controllers\Admin\InstructorController::class)->except(['show']);
         Route::resource('class-sessions', ClassSessionController::class)->except(['show']);
         Route::resource('attendances', AttendanceController::class)->except(['show']);
         Route::resource('fee-structures', FeeStructureController::class)->except(['show']);

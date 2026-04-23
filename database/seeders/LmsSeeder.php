@@ -34,24 +34,24 @@ class LmsSeeder extends Seeder
         );
 
         $ch1 = Chapter::updateOrCreate(
-            ['course_id' => $course1->id, 'chapter_title' => 'HTML & CSS Basics'],
+            ['tenant_id' => $tenant->id, 'course_id' => $course1->id, 'chapter_title' => 'HTML & CSS Basics'],
             ['order_index' => 1]
         );
         Topic::updateOrCreate(
-            ['chapters_id' => $ch1->id, 'topic_title' => 'Introduction to HTML'],
+            ['tenant_id' => $tenant->id, 'chapters_id' => $ch1->id, 'topic_title' => 'Introduction to HTML'],
             ['video_url' => 'https://www.youtube.com/watch?v=ok-plXXHlWw', 'order_index' => 1]
         );
         Topic::updateOrCreate(
-            ['chapters_id' => $ch1->id, 'topic_title' => 'CSS Flexbox Guide'],
+            ['tenant_id' => $tenant->id, 'chapters_id' => $ch1->id, 'topic_title' => 'CSS Flexbox Guide'],
             ['video_url' => 'https://www.youtube.com/watch?v=fYq5PXgSsbE', 'order_index' => 2]
         );
 
         $ch2 = Chapter::updateOrCreate(
-            ['course_id' => $course1->id, 'chapter_title' => 'React Fundamentals'],
+            ['tenant_id' => $tenant->id, 'course_id' => $course1->id, 'chapter_title' => 'React Fundamentals'],
             ['order_index' => 2]
         );
         Topic::updateOrCreate(
-            ['chapters_id' => $ch2->id, 'topic_title' => 'JSX and Components'],
+            ['tenant_id' => $tenant->id, 'chapters_id' => $ch2->id, 'topic_title' => 'JSX and Components'],
             ['video_url' => 'https://www.youtube.com/watch?v=SqcY0GlETPk', 'order_index' => 1]
         );
 
@@ -70,11 +70,11 @@ class LmsSeeder extends Seeder
         );
 
         $ch3 = Chapter::updateOrCreate(
-            ['course_id' => $course2->id, 'chapter_title' => 'NumPy & Pandas'],
+            ['tenant_id' => $tenant->id, 'course_id' => $course2->id, 'chapter_title' => 'NumPy & Pandas'],
             ['order_index' => 1]
         );
         Topic::updateOrCreate(
-            ['chapters_id' => $ch3->id, 'topic_title' => 'Data Manipulation with Pandas'],
+            ['tenant_id' => $tenant->id, 'chapters_id' => $ch3->id, 'topic_title' => 'Data Manipulation with Pandas'],
             ['video_url' => 'https://www.youtube.com/watch?v=vmEHCJofslg', 'order_index' => 1]
         );
     }

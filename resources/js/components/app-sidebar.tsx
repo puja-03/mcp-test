@@ -49,6 +49,7 @@ const adminNavItems: NavItem[] = [
 
 const academicNavItems: NavItem[] = [
     { title: 'Courses', href: '/admin/courses', icon: BookOpen },
+    { title: 'Instructors', href: '/admin/instructors', icon: GraduationCap },
     { title: 'Batches', href: '/admin/batches', icon: Users },
     { title: 'Enrollments', href: '/admin/enrollments', icon: GraduationCap },
     { title: 'Class Sessions', href: '/admin/class-sessions', icon: Calendar },
@@ -107,6 +108,7 @@ export function AppSidebar() {
                             items={[
                                 { title: 'Dashboard', href: '/tenant/dashboard', icon: LayoutGrid },
                                 { title: 'Users', href: '/tenant/users', icon: Users },
+                                { title: 'Instructors', href: '/tenant/instructors', icon: GraduationCap },
                             ]}
                             label="Tenant"
                         />
