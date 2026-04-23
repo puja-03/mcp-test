@@ -18,7 +18,9 @@ class ResultFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'marks_obtained' => fake()->numberBetween(30, 100),
+            'remarks' => fake()->randomElement(['Excellent', 'Good', 'Average', 'Need Improvement', null]),
+            'status' => 'published',
         ];
     }
 }

@@ -17,8 +17,14 @@ class ClassSessionFactory extends Factory
      */
     public function definition(): array
     {
+        $startTime = fake()->dateTimeBetween('-1 month', '+1 month');
+        $endTime = (clone $startTime)->modify('+2 hours');
+
         return [
-            //
+            'session_date' => $startTime->format('Y-m-d'),
+            'topic' => fake()->sentence(),
+            'start_time' => $startTime->format('H:i:s'),
+            'end_time' => $endTime->format('H:i:s'),
         ];
     }
 }

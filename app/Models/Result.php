@@ -16,6 +16,7 @@ class Result extends Model
         'student_id',
         'marks_obtained',
         'remarks',
+        'status',
     ];
 
     public function exam()

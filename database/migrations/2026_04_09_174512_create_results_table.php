@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
             $table->decimal('marks_obtained', 8, 2);
             $table->text('remarks')->nullable();
+            $table->string('status')->default('published');
             $table->timestamps();
 
             $table->unique(['exam_id', 'student_id']);

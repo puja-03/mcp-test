@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Attendance;
+use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends Factory<Attendance>
+ * @extends Factory<Tenant>
  */
-class AttendanceFactory extends Factory
+class TenantFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +18,10 @@ class AttendanceFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->company();
         return [
-            'status' => fake()->randomElement(['present', 'absent', 'late']),
-            'remarks' => fake()->boolean(20) ? fake()->sentence() : null,
+            'name' => $name,
+            'domain' => Str::slug($name) . '-' . Str::random(4),
         ];
     }
 }

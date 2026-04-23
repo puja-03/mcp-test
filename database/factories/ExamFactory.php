@@ -18,7 +18,10 @@ class ExamFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => ucwords(fake()->words(3, true)) . ' Assessment',
+            'max_marks' => fake()->randomElement([50, 100, 150, 200]),
+            'passing_marks' => 40,
+            'exam_date' => fake()->dateTimeBetween('-1 month', '+2 months'),
         ];
     }
 }

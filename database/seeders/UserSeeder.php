@@ -63,5 +63,19 @@ class UserSeeder extends Seeder
                 'role_id' => $studentRole->id,
             ]
         );
+
+        // 5. Acme Tenant Admin
+        $acmeTenant = Tenant::where('domain', 'acme')->first();
+        if ($acmeTenant) {
+            User::firstOrCreate(
+                ['email' => 'acme@example.com'],
+                [
+                    'name' => 'Acme Admin',
+                    'password' => Hash::make('password'),
+                    'tenant_id' => $acmeTenant->id,
+                    'role_id' => $tenantAdminRole->id,
+                ]
+            );
+        }
     }
 }

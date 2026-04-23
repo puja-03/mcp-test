@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             LmsSeeder::class,
             AcademicSeeder::class,
             RandomDataSeeder::class,
+            MassiveDataSeeder::class,
         ]);
     }
 }

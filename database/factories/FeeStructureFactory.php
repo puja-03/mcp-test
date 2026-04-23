@@ -18,7 +18,9 @@ class FeeStructureFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(3, true) . ' Plan',
+            'total_amount' => fake()->randomFloat(2, 5000, 50000),
+            'installment_count' => fake()->numberBetween(1, 12),
         ];
     }
 }
