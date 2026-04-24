@@ -15,7 +15,7 @@ class CourseController extends Controller
         $user = $request->user();
 
         $courses = Course::whereHas('batches.enrollments', fn ($q) => $q->where('student_id', $user->id)->where('status', 'active'))
-            ->with('instructor')
+            ->with(['instructor', 'chapters.topics'])
             ->when($request->input('search'), fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->withCount('chapters')
             ->paginate(10)
