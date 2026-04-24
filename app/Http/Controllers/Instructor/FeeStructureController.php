@@ -15,8 +15,8 @@ class FeeStructureController extends Controller
         $instructorId = auth()->id();
 
         $feeStructures = FeeStructure::with('course')
-            ->whereHas('course.batches.teachers', function ($query) use ($instructorId) {
-                $query->where('id', $instructorId);
+            ->whereHas('course', function ($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })
             ->when($request->input('search'), fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->latest()
@@ -33,9 +33,8 @@ class FeeStructureController extends Controller
     {
         $instructorId = auth()->id();
 
-        $courses = Course::whereHas('batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
-        })->select('id', 'name')->get();
+        $courses = Course::where('user_id', $instructorId)
+            ->select('id', 'name')->get();
 
         return Inertia::render('instructor/fee-structures/Create', [
             'courses' => $courses,
@@ -52,9 +51,8 @@ class FeeStructureController extends Controller
                 'exists:courses,id',
                 function ($attribute, $value, $fail) use ($instructorId) {
                     $ownsCourse = Course::where('id', $value)
-                        ->whereHas('batches.teachers', function ($query) use ($instructorId) {
-                            $query->where('id', $instructorId);
-                        })->exists();
+                        ->where('user_id', $instructorId)
+                        ->exists();
                     if (! $ownsCourse) {
                         $fail('You are not authorized to create fee structures for this course.');
                     }
@@ -75,17 +73,14 @@ class FeeStructureController extends Controller
         $instructorId = auth()->id();
 
         // Check if instructor has access to this fee structure's course
-        $hasAccess = $feeStructure->course()->whereHas('batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
-        })->exists();
+        $hasAccess = $feeStructure->course()->where('user_id', $instructorId)->exists();
 
         if (! $hasAccess) {
             abort(403);
         }
 
-        $courses = Course::whereHas('batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
-        })->select('id', 'name')->get();
+        $courses = Course::where('user_id', $instructorId)
+            ->select('id', 'name')->get();
 
         return Inertia::render('instructor/fee-structures/Edit', [
             'feeStructure' => $feeStructure,
@@ -98,9 +93,7 @@ class FeeStructureController extends Controller
         $instructorId = auth()->id();
 
         // Check if instructor has access to this fee structure's course
-        $hasAccess = $feeStructure->course()->whereHas('batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
-        })->exists();
+        $hasAccess = $feeStructure->course()->where('user_id', $instructorId)->exists();
 
         if (! $hasAccess) {
             abort(403);
@@ -112,9 +105,8 @@ class FeeStructureController extends Controller
                 'exists:courses,id',
                 function ($attribute, $value, $fail) use ($instructorId) {
                     $ownsCourse = Course::where('id', $value)
-                        ->whereHas('batches.teachers', function ($query) use ($instructorId) {
-                            $query->where('id', $instructorId);
-                        })->exists();
+                        ->where('user_id', $instructorId)
+                        ->exists();
                     if (! $ownsCourse) {
                         $fail('You are not authorized to update fee structures for this course.');
                     }
@@ -134,9 +126,7 @@ class FeeStructureController extends Controller
     {
         $instructorId = auth()->id();
 
-        $hasAccess = $feeStructure->course()->whereHas('batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
-        })->exists();
+        $hasAccess = $feeStructure->course()->where('user_id', $instructorId)->exists();
 
         if (! $hasAccess) {
             abort(403);

@@ -16,8 +16,8 @@ class InstallmentController extends Controller
         $instructorId = auth()->id();
 
         $installments = Installment::with(['enrollment.student', 'feeStructure'])
-            ->whereHas('enrollment.batch.teachers', function ($query) use ($instructorId) {
-                $query->where('id', $instructorId);
+            ->whereHas('enrollment.batch.course', function ($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })
             ->when($request->input('search'), function ($query, $search) {
                 $query->whereHas('enrollment.student', function ($q) use ($search) {
@@ -39,12 +39,12 @@ class InstallmentController extends Controller
         $instructorId = auth()->id();
 
         $enrollments = Enrollment::with(['student', 'batch'])
-            ->whereHas('batch.teachers', function ($query) use ($instructorId) {
-                $query->where('id', $instructorId);
+            ->whereHas('batch.course', function ($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })->get();
 
-        $feeStructures = FeeStructure::whereHas('course.batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
+        $feeStructures = FeeStructure::whereHas('course', function ($query) use ($instructorId) {
+            $query->where('user_id', $instructorId);
         })->get();
 
         return Inertia::render('instructor/installments/Create', [
@@ -63,8 +63,8 @@ class InstallmentController extends Controller
                 'exists:enrollments,id',
                 function ($attribute, $value, $fail) use ($instructorId) {
                     $hasAccess = Enrollment::where('id', $value)
-                        ->whereHas('batch.teachers', function ($query) use ($instructorId) {
-                            $query->where('id', $instructorId);
+                        ->whereHas('batch.course', function ($query) use ($instructorId) {
+                            $query->where('user_id', $instructorId);
                         })->exists();
                     if (! $hasAccess) {
                         $fail('Unauthorized enrollment.');
@@ -86,8 +86,8 @@ class InstallmentController extends Controller
     {
         $instructorId = auth()->id();
 
-        $hasAccess = $installment->enrollment()->whereHas('batch.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
+        $hasAccess = $installment->enrollment()->whereHas('batch.course', function ($query) use ($instructorId) {
+            $query->where('user_id', $instructorId);
         })->exists();
 
         if (! $hasAccess) {
@@ -95,12 +95,12 @@ class InstallmentController extends Controller
         }
 
         $enrollments = Enrollment::with(['student', 'batch'])
-            ->whereHas('batch.teachers', function ($query) use ($instructorId) {
-                $query->where('id', $instructorId);
+            ->whereHas('batch.course', function ($query) use ($instructorId) {
+                $query->where('user_id', $instructorId);
             })->get();
 
-        $feeStructures = FeeStructure::whereHas('course.batches.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
+        $feeStructures = FeeStructure::whereHas('course', function ($query) use ($instructorId) {
+            $query->where('user_id', $instructorId);
         })->get();
 
         return Inertia::render('instructor/installments/Edit', [
@@ -114,8 +114,8 @@ class InstallmentController extends Controller
     {
         $instructorId = auth()->id();
 
-        $hasAccess = $installment->enrollment()->whereHas('batch.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
+        $hasAccess = $installment->enrollment()->whereHas('batch.course', function ($query) use ($instructorId) {
+            $query->where('user_id', $instructorId);
         })->exists();
 
         if (! $hasAccess) {
@@ -128,8 +128,8 @@ class InstallmentController extends Controller
                 'exists:enrollments,id',
                 function ($attribute, $value, $fail) use ($instructorId) {
                     $hasAccess = Enrollment::where('id', $value)
-                        ->whereHas('batch.teachers', function ($query) use ($instructorId) {
-                            $query->where('id', $instructorId);
+                        ->whereHas('batch.course', function ($query) use ($instructorId) {
+                            $query->where('user_id', $instructorId);
                         })->exists();
                     if (! $hasAccess) {
                         $fail('Unauthorized enrollment.');
@@ -151,8 +151,8 @@ class InstallmentController extends Controller
     {
         $instructorId = auth()->id();
 
-        $hasAccess = $installment->enrollment()->whereHas('batch.teachers', function ($query) use ($instructorId) {
-            $query->where('id', $instructorId);
+        $hasAccess = $installment->enrollment()->whereHas('batch.course', function ($query) use ($instructorId) {
+            $query->where('user_id', $instructorId);
         })->exists();
 
         if (! $hasAccess) {
