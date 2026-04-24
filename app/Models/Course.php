@@ -64,4 +64,9 @@ class Course extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function enrollments(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Enrollment::class, Batch::class);
+    }
 }

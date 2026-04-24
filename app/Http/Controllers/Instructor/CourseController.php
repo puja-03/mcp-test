@@ -53,4 +53,35 @@ class CourseController extends Controller
 
         return redirect()->route('instructor.courses.index')->with('success', 'Course updated.');
     }
+    public function create()
+    {
+        return Inertia::render('instructor/courses/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'nullable|string|max:50',
+            'description' => 'nullable|string',
+            'duration_months' => 'nullable|integer|min:1',
+            'total_fees' => 'required|numeric|min:0',
+            'is_published' => 'boolean',
+        ]);
+
+        $validated['user_id'] = auth()->id();
+
+        Course::create($validated);
+
+        return redirect()->route('instructor.courses.index')->with('success', 'Course created.');
+    }
+
+    public function destroy(Course $course)
+    {
+        abort_if($course->user_id !== auth()->id(), 403);
+
+        $course->delete();
+
+        return redirect()->route('instructor.courses.index')->with('success', 'Course deleted.');
+    }
 }

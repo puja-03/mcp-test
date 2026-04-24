@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
         // Recent courses with enrollment count
         $recentCourses = Course::where('user_id', $userId)
-            ->withCount(['enrollments' => fn ($q) => $q->where('status', 'active')])
+            ->withCount(['enrollments' => fn ($q) => $q->where('enrollments.status', 'active')])
             ->latest()
             ->limit(5)
             ->get()

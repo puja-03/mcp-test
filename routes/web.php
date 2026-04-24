@@ -41,7 +41,7 @@ Route::middleware([TenantResolver::class])->group(function () {
                 return redirect()->route('tenant.dashboard');
             }
             if (auth()->user()->hasRole('instructor')) {
-                return redirect()->route('instructor.profile.edit');
+                return redirect()->route('instructor.dashboard');
             }
             if (auth()->user()->hasRole('student')) {
                 return redirect()->route('student.dashboard');
@@ -79,8 +79,9 @@ Route::middleware([TenantResolver::class])->group(function () {
         ->prefix('instructor')
         ->name('instructor.')
         ->group(function () {
+            Route::get('dashboard', [\App\Http\Controllers\Instructor\DashboardController::class, 'index'])->name('dashboard');
             Route::resource('users', App\Http\Controllers\Instructor\UserController::class)->only(['index', 'show']);
-            Route::resource('courses', App\Http\Controllers\Instructor\CourseController::class)->only(['index', 'show', 'edit', 'update']);
+            Route::resource('courses', App\Http\Controllers\Instructor\CourseController::class);
             Route::resource('chapters', App\Http\Controllers\Instructor\ChapterController::class)->except(['show']);
             Route::resource('topics', App\Http\Controllers\Instructor\TopicController::class)->except(['show']);
             Route::resource('attendances', App\Http\Controllers\Instructor\AttendanceController::class)->except(['show']);

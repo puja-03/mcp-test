@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { GraduationCap, BookOpen, CheckSquare, Award, User, Mail, Calendar } from 'lucide-react';
 
-
 type Enrollment = {
     id: number;
     batch: {
@@ -81,7 +80,7 @@ export default function Show({ user }: { user: StudentProfile }) {
                                 <TabsTrigger value="attendance">Attendance</TabsTrigger>
                                 <TabsTrigger value="results">Academic Results</TabsTrigger>
                             </TabsList>
-                            
+
                             <TabsContent value="courses" className="mt-6">
                                 <Card>
                                     <CardHeader>
@@ -171,8 +170,8 @@ export default function Show({ user }: { user: StudentProfile }) {
                                                         </Badge>
                                                     </div>
                                                     <div className="w-full bg-muted rounded-full h-2 overflow-hidden shadow-inner">
-                                                        <div 
-                                                            className="bg-primary h-full transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(var(--primary),0.5)]" 
+                                                        <div
+                                                            className="bg-primary h-full transition-all duration-1000 ease-out shadow-[0_0_8px_rgba(var(--primary),0.5)]"
                                                             style={{ width: `${(result.score / result.exam.total_marks) * 100}%` }}
                                                         />
                                                     </div>
@@ -209,7 +208,7 @@ export default function Show({ user }: { user: StudentProfile }) {
                                 <div className="flex justify-between items-center bg-white/10 p-4 rounded-xl backdrop-blur-sm transition-transform hover:scale-[1.02]">
                                     <span className="text-white/80 font-medium">Attendance Rate</span>
                                     <span className="text-2xl font-bold text-white tabular-nums">
-                                        {user.attendances.length > 0 
+                                        {user.attendances.length > 0
                                             ? Math.round((user.attendances.filter(a => a.status === 'present').length / user.attendances.length) * 100)
                                             : 0}%
                                     </span>
