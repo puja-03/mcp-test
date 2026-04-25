@@ -33,16 +33,16 @@ export default function StudentDashboard({ stats, courses = [] }: { stats: any, 
             <Head title="My Learning" />
             
             {/* Udemy-like Dark Header */}
-            <header className="bg-[#1c1d1f] text-white py-10 px-6 lg:px-12 border-b-4 border-indigo-500">
+            <header className="bg-[#1c1d1f] text-white py-6 px-6 lg:px-12 border-b-4 border-indigo-500">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div>
-                        <h1 className="text-3xl lg:text-4xl font-bold font-serif mb-2 tracking-tight">My learning</h1>
-                        <p className="text-gray-300 text-lg font-light">Welcome back! Continue your journey right where you left off.</p>
+                        <h1 className="text-2xl lg:text-3xl font-bold font-serif mb-1 tracking-tight">My learning</h1>
+                        <p className="text-gray-300 text-sm md:text-base font-light">Welcome back! Continue your journey right where you left off.</p>
                     </div>
                     <div className="flex gap-4">
                         <Button 
                             onClick={() => router.visit('/student/courses')} 
-                            className="bg-white text-[#1c1d1f] hover:bg-gray-200 font-bold px-6 py-6 rounded-none h-auto transition-colors"
+                            className="bg-white text-[#1c1d1f] hover:bg-gray-200 font-bold px-6 py-4 rounded-none h-auto transition-colors"
                         >
                             Browse Courses
                         </Button>
