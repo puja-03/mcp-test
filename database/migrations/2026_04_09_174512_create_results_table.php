@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('results', function (Blueprint $table) {
@@ -15,7 +14,8 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
             $table->decimal('marks_obtained', 8, 2);
             $table->text('remarks')->nullable();
-            $table->string('status')->default('published');
+            $table->string('status')->default('published')->after('remarks');
+
             $table->timestamps();
 
             $table->unique(['exam_id', 'student_id']);
@@ -24,6 +24,8 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('results');
+        Schema::table('results', function (Blueprint $table) {
+            $table->dropColumn('status');
+        });
     }
 };
