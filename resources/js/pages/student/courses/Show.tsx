@@ -1,8 +1,9 @@
 import { Head, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { PlayCircle, FileText, ChevronLeft, User, BookOpen, ChevronDown } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 
 export default function Show({ course }: any) {
     const chapters = course.chapters || [];
@@ -10,7 +11,7 @@ export default function Show({ course }: any) {
     return (
         <div className="p-6 max-w-5xl mx-auto">
             <Head title={course.name} />
-            
+
             <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
                     <Button variant="ghost" onClick={() => router.visit('/student/courses')} className="mb-4 -ml-4">
@@ -66,8 +67,8 @@ export default function Show({ course }: any) {
                                             <div className="px-4 pb-4 pt-0">
                                                 <div className="space-y-1 border-t pt-3">
                                                     {topics.sort((a: any, b: any) => (a.order_index || 0) - (b.order_index || 0)).map((topic: any, tidx: number) => (
-                                                        <div 
-                                                            key={topic.id} 
+                                                        <div
+                                                            key={topic.id}
                                                             className="group/topic flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border border-transparent hover:border-border"
                                                             onClick={() => router.visit(`/student/topics/${topic.topic_slug}`)}
                                                         >
