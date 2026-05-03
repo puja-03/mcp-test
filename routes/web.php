@@ -32,6 +32,8 @@ Route::middleware([TenantResolver::class])->group(function () {
         'canRegister' => Features::enabled(Features::registration()),
     ])->name('home');
 
+    Route::inertia('/about', 'about')->name('about');
+
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('dashboard', function () {
             if (auth()->user()->hasRole('admin')) {
