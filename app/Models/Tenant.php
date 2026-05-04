@@ -16,6 +16,10 @@ class Tenant extends Model
         'logo_url',
         'primary_color',
         'secondary_color',
+        'email',
+        'phone',
+        'address',
+        'description',
         'settings'
     ];
 

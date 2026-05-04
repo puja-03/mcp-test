@@ -47,6 +47,10 @@ class TenantController extends Controller
             'logo_url' => 'nullable|url|max:255',
             'primary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
             'secondary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'description' => 'nullable|string',
             'admin_name' => 'nullable|string|max:255',
             'admin_email' => 'nullable|email',
             'admin_password' => 'nullable|string|min:6',
@@ -58,6 +62,10 @@ class TenantController extends Controller
             'logo_url' => $validated['logo_url'] ?? null,
             'primary_color' => $validated['primary_color'] ?? '#4f46e5',
             'secondary_color' => $validated['secondary_color'] ?? '#4338ca',
+            'email' => $validated['email'] ?? null,
+            'phone' => $validated['phone'] ?? null,
+            'address' => $validated['address'] ?? null,
+            'description' => $validated['description'] ?? null,
         ]);
 
         if (! empty($validated['admin_email'])) {

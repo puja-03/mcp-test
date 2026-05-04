@@ -25,6 +25,10 @@ export default function CreateTenant() {
         logo_url: '',
         primary_color: '#4f46e5',
         secondary_color: '#4338ca',
+        email: '',
+        phone: '',
+        address: '',
+        description: '',
         admin_name: '', 
         admin_email: '', 
         admin_password: '' 
