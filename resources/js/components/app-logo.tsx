@@ -1,16 +1,24 @@
-import AppLogoIcon from '@/components/app-logo-icon';
+import { home } from '@/routes';
+import { Link } from '@inertiajs/react';
 
 export default function AppLogo() {
     return (
-        <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
+        <Link href={home()} className="flex items-center gap-2.5">
+            <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #4f46e5, #4338ca)' }}
+            >
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2L3 7v10h5v-6h4v6h5V7L10 2z" fill="white" />
+                </svg>
             </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">
-                    Laravel Starter Kit
-                </span>
-            </div>
-        </>
+            <span
+                className="font-bold text-lg text-gray-900 tracking-tight"
+                style={{ fontFamily: 'Manrope, sans-serif' }}
+            >
+                EliteCoach
+            </span>
+        </Link>
     );
 }
+
