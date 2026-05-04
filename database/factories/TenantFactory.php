@@ -22,6 +22,14 @@ class TenantFactory extends Factory
         return [
             'name' => $name,
             'domain' => Str::slug($name) . '-' . Str::random(4),
+            'logo_url' => 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random',
+            'primary_color' => $this->faker->hexColor(),
+            'secondary_color' => $this->faker->hexColor(),
+            'email' => $this->faker->companyEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'address' => $this->faker->address(),
+            'description' => $this->faker->paragraph(),
+            'settings' => [],
         ];
     }
 }
