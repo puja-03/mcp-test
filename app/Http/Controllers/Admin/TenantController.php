@@ -44,6 +44,9 @@ class TenantController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'domain' => 'required|string|max:255|unique:tenants,domain',
+            'logo_url' => 'nullable|url|max:255',
+            'primary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'secondary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
             'admin_name' => 'nullable|string|max:255',
             'admin_email' => 'nullable|email',
             'admin_password' => 'nullable|string|min:6',
@@ -52,6 +55,9 @@ class TenantController extends Controller
         $tenant = Tenant::create([
             'name' => $validated['name'],
             'domain' => $validated['domain'],
+            'logo_url' => $validated['logo_url'] ?? null,
+            'primary_color' => $validated['primary_color'] ?? '#4f46e5',
+            'secondary_color' => $validated['secondary_color'] ?? '#4338ca',
         ]);
 
         if (! empty($validated['admin_email'])) {
