@@ -19,7 +19,7 @@ export default function AuthEliteCoachLayout({
                 <div className="absolute bottom-[-10%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-indigo-50/30 blur-[100px] pointer-events-none" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-white/20 blur-[150px] pointer-events-none" />
 
-                <div className="w-full max-w-md relative z-10">
+                <div className="w-full max-w-md relative z-10 mt-12">
                     {/* Auth Card */}
                     <div className="bg-white rounded-[2.5rem] p-10 lg:p-12 shadow-[0_30px_60px_-15px_rgba(79,70,229,0.1)] border border-white/60 backdrop-blur-sm relative">
                         {/* Header info inside card */}
