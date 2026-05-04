@@ -2,7 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Batch;
 use App\Models\Enrollment;
+use App\Models\Payment;
+use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +22,10 @@ class EnrollmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'tenant_id' => \App\Models\Tenant::first()->id ?? 1,
-            'student_id' => \App\Models\User::factory(),
-            'batch_id' => \App\Models\Batch::factory(),
+            'tenant_id' => Tenant::first()->id ?? 1,
+            'student_id' => User::factory(),
+            'batch_id' => Batch::factory(),
+            'payment_id' => Payment::factory(),
             'enrollment_date' => fake()->dateTimeBetween('-6 months', 'now'),
             'status' => 'active',
             'amount' => fake()->randomFloat(2, 5000, 20000),
