@@ -13,7 +13,7 @@ export default function AuthEliteCoachLayout({
         <div className="min-h-screen flex flex-col bg-[#fcf8ff] font-sans selection:bg-indigo-100 selection:text-indigo-700">
             <SiteHeader />
 
-            <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative overflow-hidden pt-48 pb-32">
+            <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative overflow-hidden pt-24 pb-20">
                 {/* Soft decorative blobs for depth */}
                 <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-50/50 blur-[120px] pointer-events-none" />
                 <div className="absolute bottom-[-10%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-indigo-50/30 blur-[100px] pointer-events-none" />
