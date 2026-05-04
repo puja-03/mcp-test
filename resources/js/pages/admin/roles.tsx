@@ -1,4 +1,4 @@
-import AppEliteCoachLayout from '@/layouts/app-elitecoach-layout';
+import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,13 +11,13 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
-import { 
-    Shield, 
-    Lock, 
-    Users, 
-    Settings, 
-    Trash2, 
-    Edit2, 
+import {
+    Shield,
+    Lock,
+    Users,
+    Settings,
+    Trash2,
+    Edit2,
     Plus,
     CheckCircle2,
     Search,
@@ -31,7 +31,7 @@ type Role = { id: number; name: string; users_count: number; permissions: Permis
 export default function Roles({ roles, permissions }: { roles: Role[]; permissions: Permission[] }) {
     const { branding } = usePage().props as any;
     const primaryColor = branding?.primary_color || '#4f46e5';
-    
+
     const [editRole, setEditRole] = useState<Role | null>(null);
     const [open, setOpen] = useState(false);
 
@@ -79,10 +79,8 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
     };
 
     return (
-        <AppEliteCoachLayout title="Access Control">
-            <Head title="Manage Roles" />
-            
-            <div className="w-full px-6 lg:px-12 py-10 flex-1 flex flex-col">
+        <>
+            <div className="w-full flex-1 flex flex-col p-6">
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                     <div>
@@ -95,10 +93,10 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                     <div className="flex items-center gap-3">
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <Button 
+                                <Button
                                     onClick={openCreateModal}
                                     className="h-11 px-6 rounded-xl font-bold text-white flex items-center gap-2 transition-all hover:scale-105 active:scale-95 shadow-lg"
-                                    style={{ 
+                                    style={{
                                         background: `linear-gradient(180deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
                                         boxShadow: `0 8px 20px ${primaryColor}4d`
                                     }}
@@ -135,12 +133,12 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                         <Label className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">System Capabilities</Label>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                                             {permissions.map((p) => (
-                                                <label 
-                                                    key={p.id} 
+                                                <label
+                                                    key={p.id}
                                                     className={`
                                                         flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer group
-                                                        ${data.permissions.includes(p.id) 
-                                                            ? 'bg-indigo-50/50 border-indigo-200' 
+                                                        ${data.permissions.includes(p.id)
+                                                            ? 'bg-indigo-50/50 border-indigo-200'
                                                             : 'bg-white border-gray-100 hover:border-gray-200'}
                                                     `}
                                                 >
@@ -159,19 +157,19 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                         {errors.permissions && <p className="text-xs font-bold text-rose-500 mt-1">{errors.permissions}</p>}
                                     </div>
                                     <div className="flex justify-end gap-3 pt-4 border-t border-gray-50">
-                                        <Button 
-                                            type="button" 
-                                            variant="ghost" 
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
                                             onClick={() => setOpen(false)}
                                             className="h-12 px-6 rounded-xl font-bold text-gray-500 hover:text-slate-900"
                                         >
                                             Discard
                                         </Button>
-                                        <Button 
-                                            type="submit" 
+                                        <Button
+                                            type="submit"
                                             disabled={processing}
                                             className="h-12 px-8 rounded-xl font-bold text-white shadow-lg"
-                                            style={{ 
+                                            style={{
                                                 background: `linear-gradient(180deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
                                             }}
                                         >
@@ -187,8 +185,8 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                 {/* Roles Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 items-start">
                     {roles.map((role) => (
-                        <div 
-                            key={role.id} 
+                        <div
+                            key={role.id}
                             className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-8 flex flex-col h-full group hover:shadow-xl transition-all"
                         >
                             <div className="flex items-center justify-between mb-6">
@@ -196,13 +194,13 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                     <Shield size={24} />
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <button 
+                                    <button
                                         onClick={() => openEditModal(role)}
                                         className="p-2 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
                                     >
                                         <Edit2 size={16} />
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => handleDelete(role)}
                                         disabled={role.name === 'admin' || role.users_count > 0}
                                         className="p-2 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
@@ -224,8 +222,8 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                 <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider mb-2">Capabilities</p>
                                 <div className="flex flex-wrap gap-1.5">
                                     {role.permissions.slice(0, 4).map((p) => (
-                                        <span 
-                                            key={p.id} 
+                                        <span
+                                            key={p.id}
                                             className="px-2.5 py-1 rounded-lg bg-gray-50 border border-gray-100 text-[10px] font-bold text-slate-600 uppercase tracking-tight"
                                         >
                                             {p.name.replace('-', ' ')}
@@ -243,7 +241,7 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                             </div>
                         </div>
                     ))}
-                    
+
                     {roles.length === 0 && (
                         <div className="col-span-full py-20 text-center bg-gray-50/50 rounded-[2rem] border-2 border-dashed border-gray-100">
                             <div className="flex flex-col items-center gap-4">
@@ -259,6 +257,6 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                     )}
                 </div>
             </div>
-        </AppEliteCoachLayout>
+        </>
     );
 }

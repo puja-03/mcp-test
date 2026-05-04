@@ -1,4 +1,3 @@
-import AppEliteCoachLayout from '@/layouts/app-elitecoach-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Head, usePage } from '@inertiajs/react';
@@ -8,11 +7,9 @@ import {
     BookOpen, 
     CreditCard, 
     TrendingUp, 
-    ShieldCheck, 
-    Zap,
     ArrowUpRight,
-    Search
 } from 'lucide-react';
+import AppLayout from '@/layouts/app-layout';
 
 type Stat = {
     total_tenants: number;
@@ -27,11 +24,7 @@ export default function Dashboard({ stats }: { stats: Stat }) {
     const { branding } = usePage().props as any;
     const primaryColor = branding?.primary_color || '#4f46e5';
     return (
-        <AppEliteCoachLayout title="Admin Command Center">
-            <Head title="Admin Dashboard" />        
-
-            {/* Main Stats Grid */}
-            <div className="w-full px-6 lg:px-12 py-10 -mt-8 flex-1">
+        <div className="w-full flex-1 p-6 lg:p-10">
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
                     {[
                         { 
@@ -219,7 +212,5 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                     </div>
                 </div>
             </div>
-        </AppEliteCoachLayout>
     );
 }
-
