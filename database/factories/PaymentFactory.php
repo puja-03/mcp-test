@@ -19,6 +19,7 @@ class PaymentFactory extends Factory
     {
         return [
             'tenant_id' => \App\Models\Tenant::first()->id ?? 1,
+            'enrollment_id' => \App\Models\Enrollment::factory(),
             'amount' => fake()->randomFloat(2, 100, 10000),
             'currency' => 'INR',
             'payment_date' => fake()->date(),

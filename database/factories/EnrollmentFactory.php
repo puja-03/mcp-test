@@ -25,7 +25,6 @@ class EnrollmentFactory extends Factory
             'tenant_id' => Tenant::first()->id ?? 1,
             'student_id' => User::factory(),
             'batch_id' => Batch::factory(),
-            'payment_id' => Payment::factory(),
             'enrollment_date' => fake()->dateTimeBetween('-6 months', 'now'),
             'status' => 'active',
             'amount' => fake()->randomFloat(2, 5000, 20000),
