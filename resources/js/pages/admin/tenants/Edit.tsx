@@ -8,40 +8,49 @@ import {
     Globe, 
     Palette, 
     ShieldCheck, 
-    UserPlus, 
     Image as ImageIcon,
     ArrowLeft,
     CheckCircle2
 } from 'lucide-react';
 import { Link } from '@inertiajs/react';
 
-export default function CreateTenant() {
+type Tenant = {
+    id: number;
+    name: string;
+    domain: string;
+    logo_url: string | null;
+    primary_color: string;
+    secondary_color: string | null;
+    email: string | null;
+    phone: string | null;
+    address: string | null;
+    description: string | null;
+};
+
+export default function EditTenant({ tenant }: { tenant: Tenant }) {
     const { branding } = usePage().props as any;
     const primaryColor = branding?.primary_color || '#4f46e5';
 
-    const { data, setData, post, processing, errors } = useForm({ 
-        name: '', 
-        domain: '', 
-        logo_url: '',
-        primary_color: '#4f46e5',
-        secondary_color: '#4338ca',
-        email: '',
-        phone: '',
-        address: '',
-        description: '',
-        admin_name: '', 
-        admin_email: '', 
-        admin_password: '' 
+    const { data, setData, put, processing, errors } = useForm({ 
+        name: tenant.name, 
+        domain: tenant.domain, 
+        logo_url: tenant.logo_url || '',
+        primary_color: tenant.primary_color || '#4f46e5',
+        secondary_color: tenant.secondary_color || '#4338ca',
+        email: tenant.email || '',
+        phone: tenant.phone || '',
+        address: tenant.address || '',
+        description: tenant.description || '',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/tenants');
+        put(`/admin/tenants/${tenant.id}`);
     };
 
     return (
-        <AppEliteCoachLayout title="Provision New Tenant">
-            <Head title="Create Tenant" />
+        <AppEliteCoachLayout title="Configure Tenant">
+            <Head title={`Edit ${tenant.name}`} />
             
             <div className="w-full px-6 lg:px-12 py-10 flex-1 flex flex-col">
                 {/* Navigation Header */}
@@ -55,9 +64,9 @@ export default function CreateTenant() {
                         </Link>
                         <div>
                             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                                Provision New Tenant
+                                Configure Workspace
                             </h1>
-                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Configure workspace and branding</p>
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Refine institutional identity and branding</p>
                         </div>
                     </div>
                 </div>
@@ -231,55 +240,6 @@ export default function CreateTenant() {
                                 </div>
                             </div>
 
-                            {/* Section: Admin Account */}
-                            <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm space-y-6">
-                                <div className="flex items-center gap-3 pb-4 border-b border-gray-50">
-                                    <div className="p-2.5 rounded-xl bg-indigo-50 text-indigo-600">
-                                        <ShieldCheck size={20} />
-                                    </div>
-                                    <h3 className="font-extrabold text-slate-900">Administrator Account</h3>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="admin_name" className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">Full Name</Label>
-                                        <Input 
-                                            id="admin_name" 
-                                            value={data.admin_name} 
-                                            onChange={(e) => setData('admin_name', e.target.value)} 
-                                            className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none"
-                                            placeholder="John Doe"
-                                        />
-                                        {errors.admin_name && <p className="text-xs font-bold text-rose-500 mt-1">{errors.admin_name}</p>}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <Label htmlFor="admin_email" className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">Email Address</Label>
-                                        <Input 
-                                            id="admin_email" 
-                                            value={data.admin_email} 
-                                            onChange={(e) => setData('admin_email', e.target.value)} 
-                                            className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none"
-                                            placeholder="admin@example.com"
-                                        />
-                                        {errors.admin_email && <p className="text-xs font-bold text-rose-500 mt-1">{errors.admin_email}</p>}
-                                    </div>
-
-                                    <div className="md:col-span-2 space-y-2">
-                                        <Label htmlFor="admin_password" className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">Access Password</Label>
-                                        <Input 
-                                            id="admin_password" 
-                                            type="password" 
-                                            value={data.admin_password} 
-                                            onChange={(e) => setData('admin_password', e.target.value)} 
-                                            className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none"
-                                            placeholder="••••••••"
-                                        />
-                                        {errors.admin_password && <p className="text-xs font-bold text-rose-500 mt-1">{errors.admin_password}</p>}
-                                    </div>
-                                </div>
-                            </div>
-
                             <div className="flex items-center justify-end gap-4 pt-4">
                                 <Link 
                                     href="/admin/tenants" 
@@ -296,7 +256,7 @@ export default function CreateTenant() {
                                         boxShadow: `0 10px 25px ${primaryColor}4d`
                                     }}
                                 >
-                                    {processing ? 'Provisioning...' : 'Provision Workspace'}
+                                    {processing ? 'Saving Changes...' : 'Update Workspace'}
                                 </Button>
                             </div>
                         </form>
@@ -309,13 +269,13 @@ export default function CreateTenant() {
                             style={{ background: `linear-gradient(135deg, #1e1b4b 0%, ${primaryColor} 100%)` }}
                         >
                             <div className="relative z-10">
-                                <h4 className="text-xl font-extrabold mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>System Guidelines</h4>
+                                <h4 className="text-xl font-extrabold mb-4" style={{ fontFamily: 'Manrope, sans-serif' }}>Live Status</h4>
                                 <ul className="space-y-4">
                                     {[
-                                        'Unique Subdomain required for each tenant context.',
-                                        'Primary color affects all UI highlights for the tenant.',
-                                        'Administrator account will be created automatically.',
-                                        'Branding assets can be updated post-provisioning.'
+                                        'Configuration is active and live.',
+                                        'Primary color updates UI elements instantly.',
+                                        'Subdomain changes will affect user access.',
+                                        'Institutional metadata is used in reports.'
                                     ].map((note, i) => (
                                         <li key={i} className="flex gap-3 text-sm font-medium opacity-90 leading-relaxed">
                                             <CheckCircle2 size={18} className="shrink-0 opacity-60" />

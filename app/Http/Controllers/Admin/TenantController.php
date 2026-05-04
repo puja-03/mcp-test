@@ -87,6 +87,32 @@ class TenantController extends Controller
         return redirect()->route('admin.tenants.index')->with('success', 'Tenant created.');
     }
 
+    public function edit(Tenant $tenant)
+    {
+        return Inertia::render('admin/tenants/Edit', [
+            'tenant' => $tenant,
+        ]);
+    }
+
+    public function update(Request $request, Tenant $tenant)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'domain' => 'required|string|max:255|unique:tenants,domain,' . $tenant->id,
+            'logo_url' => 'nullable|url|max:255',
+            'primary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'secondary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $tenant->update($validated);
+
+        return redirect()->route('admin.tenants.index')->with('success', 'Tenant updated.');
+    }
+
     public function destroy(Tenant $tenant)
     {
         $tenant->delete();

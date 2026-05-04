@@ -110,10 +110,7 @@ Route::middleware([TenantResolver::class])->group(function () {
     // ─── SUPER ADMIN PANEL ───
     Route::middleware(['auth', 'verified', CheckRole::class.':admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/tenants', [TenantController::class, 'index'])->name('tenants.index');
-        Route::get('/tenants/create', [TenantController::class, 'create'])->name('tenants.create');
-        Route::post('/tenants', [TenantController::class, 'store'])->name('tenants.store');
-        Route::delete('/tenants/{tenant}', [TenantController::class, 'destroy'])->name('tenants.destroy');
+        Route::resource('tenants', TenantController::class)->except(['show']);
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
         Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
         Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
