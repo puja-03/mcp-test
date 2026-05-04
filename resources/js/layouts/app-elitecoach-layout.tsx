@@ -20,9 +20,10 @@ interface Props {
 }
 
 export default function AppEliteCoachLayout({ children, title }: Props) {
-    const { auth } = usePage().props as any;
+    const { auth, branding } = usePage().props as any;
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const primaryColor = branding?.primary_color || '#4f46e5';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -66,11 +67,23 @@ export default function AppEliteCoachLayout({ children, title }: Props) {
                                 <Link
                                     key={item.label}
                                     href={item.href}
-                                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 ${
-                                        usePage().url.startsWith(item.href)
-                                            ? 'text-indigo-600 bg-indigo-50/50'
-                                            : 'text-gray-600 hover:text-indigo-600 hover:bg-gray-100/50'
-                                    }`}
+                                    className="px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2"
+                                    style={{
+                                        color: usePage().url.startsWith(item.href) ? primaryColor : '',
+                                        backgroundColor: usePage().url.startsWith(item.href) ? `${primaryColor}15` : '',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (!usePage().url.startsWith(item.href)) {
+                                            e.currentTarget.style.color = primaryColor;
+                                            e.currentTarget.style.backgroundColor = `${primaryColor}10`;
+                                        }
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (!usePage().url.startsWith(item.href)) {
+                                            e.currentTarget.style.color = '';
+                                            e.currentTarget.style.backgroundColor = '';
+                                        }
+                                    }}
                                 >
                                     <item.icon className="w-4 h-4" />
                                     {item.label}
@@ -82,16 +95,33 @@ export default function AppEliteCoachLayout({ children, title }: Props) {
                     <div className="flex items-center gap-4">
                         {/* Search Bar (Desktop) */}
                         <div className="hidden md:flex items-center relative group">
-                            <Search className="absolute left-3.5 h-4 w-4 text-gray-400 group-focus-within:text-indigo-500 transition-colors" />
+                            <Search className="absolute left-3.5 h-4 w-4 text-gray-400 group-focus-within:text-[var(--primary)] transition-colors" />
                             <input 
                                 type="text" 
                                 placeholder="Search everything..." 
-                                className="h-10 pl-10 pr-4 bg-gray-100/50 border-transparent rounded-xl text-sm w-64 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none"
+                                className="h-10 pl-10 pr-4 bg-gray-100/50 border-transparent rounded-xl text-sm w-64 focus:bg-white focus:ring-2 focus:ring-[var(--primary-glow)] focus:border-[var(--primary-border)] transition-all outline-none"
+                                style={{ 
+                                    '--primary': primaryColor,
+                                    '--primary-glow': `${primaryColor}33`,
+                                    '--primary-border': `${primaryColor}4d`
+                                } as React.CSSProperties}
                             />
                         </div>
 
                         {/* Notifications */}
-                        <Button variant="ghost" size="icon" className="relative rounded-xl text-gray-500 hover:text-indigo-600 hover:bg-indigo-50/50">
+                        <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="relative rounded-xl text-gray-500 transition-colors"
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.color = primaryColor;
+                                e.currentTarget.style.backgroundColor = `${primaryColor}15`;
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.color = '';
+                                e.currentTarget.style.backgroundColor = '';
+                            }}
+                        >
                             <Bell className="w-5 h-5" />
                             <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-rose-500 border-2 border-white rounded-full"></span>
                         </Button>
@@ -101,12 +131,18 @@ export default function AppEliteCoachLayout({ children, title }: Props) {
                             <DropdownMenuTrigger asChild>
                                 <button className="flex items-center gap-3 p-1 pl-3 rounded-2xl hover:bg-gray-100/50 transition-all group border border-transparent hover:border-gray-200/50">
                                     <div className="flex flex-col items-end hidden sm:flex">
-                                        <span className="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">{auth.user.name}</span>
-                                        <span className="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">{role}</span>
+                                        <span 
+                                            className="text-sm font-bold text-gray-900 transition-colors"
+                                            onMouseEnter={(e) => (e.currentTarget.style.color = primaryColor)}
+                                            onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+                                        >
+                                            {auth.user.name}
+                                        </span>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: primaryColor }}>{role}</span>
                                     </div>
                                     <Avatar className="w-9 h-9 border-2 border-white shadow-sm group-hover:scale-105 transition-transform">
                                         <AvatarImage src={auth.user.avatar} />
-                                        <AvatarFallback className="bg-indigo-600 text-white font-bold text-xs">
+                                        <AvatarFallback className="text-white font-bold text-xs" style={{ backgroundColor: primaryColor }}>
                                             {auth.user.name.charAt(0).toUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
@@ -176,15 +212,8 @@ export default function AppEliteCoachLayout({ children, title }: Props) {
             {/* Premium Footer */}
             <footer className="py-8 px-6 lg:px-12 border-t border-gray-200/50 bg-white/50 backdrop-blur-sm mt-auto">
                 <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500 font-medium">
-                    <div className="flex items-center gap-2">
-                        <span className="font-bold text-indigo-600">EliteCoach</span>
-                        <span>© 2024 · Premium Mentorship Excellence</span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Privacy Policy</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Terms of Service</a>
-                        <a href="#" className="hover:text-indigo-600 transition-colors">Support</a>
-                    </div>
+                    <p className="text-xs text-gray-600">© {new Date().getFullYear()} {branding?.name || 'EliteCoach'}. All rights reserved.</p>
+                    <p className="text-xs text-gray-600">Trusted by 5,000+ coaches across 6 continents</p>
                 </div>
             </footer>
         </div>

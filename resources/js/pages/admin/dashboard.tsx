@@ -1,7 +1,7 @@
 import AppEliteCoachLayout from '@/layouts/app-elitecoach-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { 
     Users, 
     Building2, 
@@ -24,59 +24,14 @@ type Stat = {
 };
 
 export default function Dashboard({ stats }: { stats: Stat }) {
+    const { branding } = usePage().props as any;
+    const primaryColor = branding?.primary_color || '#4f46e5';
     return (
         <AppEliteCoachLayout title="Admin Command Center">
-            <Head title="Admin Dashboard" />
-
-            {/* Premium Admin Hero */}
-            <div
-                className="px-6 lg:px-12 py-12 relative overflow-hidden"
-                style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)' }}
-            >
-                <div className="max-w-[1600px] mx-auto relative z-10">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-                        <div>
-                            <div className="flex items-center gap-3 mb-4">
-                                <Badge className="bg-indigo-500 hover:bg-indigo-600 text-white border-none px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
-                                    System Administrator
-                                </Badge>
-                                <span className="text-slate-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                                    <ShieldCheck size={12} className="text-indigo-400" />
-                                    Security Status: Optimal
-                                </span>
-                            </div>
-                            <h1
-                                className="text-3xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight"
-                                style={{ fontFamily: 'Manrope, sans-serif' }}
-                            >
-                                Platform Overview
-                            </h1>
-                            <p className="text-slate-400 text-lg font-medium opacity-90 max-w-xl leading-relaxed">
-                                EliteCoach SaaS performance and multi-tenant ecosystem management.
-                            </p>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                            <Button className="bg-white/10 hover:bg-white/20 text-white border-white/10 backdrop-blur-md h-11 px-6 rounded-xl font-bold text-sm">
-                                System Logs
-                            </Button>
-                            <Button 
-                                className="h-11 px-6 rounded-xl font-bold text-white shadow-lg shadow-indigo-900/40"
-                                style={{ background: 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)' }}
-                            >
-                                <Zap size={16} className="mr-2 fill-current" />
-                                Run Analytics
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-                
-                {/* Visual decoration */}
-                <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-            </div>
+            <Head title="Admin Dashboard" />        
 
             {/* Main Stats Grid */}
-            <div className="max-w-[1600px] mx-auto px-6 lg:px-12 py-10 -mt-8 flex-1">
+            <div className="w-full px-6 lg:px-12 py-10 -mt-8 flex-1">
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
                     {[
                         { 
@@ -113,7 +68,19 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                             className="group relative bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                         >
                             <div className="flex items-center justify-between mb-4">
-                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-${s.color}-50 text-${s.color}-600 transition-colors group-hover:bg-${s.color}-600 group-hover:text-white`}>
+                                <div 
+                                    className="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors group-hover:text-white"
+                                    style={{ 
+                                        backgroundColor: s.color === 'indigo' ? `${primaryColor}15` : (s.color === 'blue' ? '#eff6ff' : (s.color === 'purple' ? '#faf5ff' : '#ecfdf5')),
+                                        color: s.color === 'indigo' ? primaryColor : (s.color === 'blue' ? '#2563eb' : (s.color === 'purple' ? '#9333ea' : '#059669')),
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        if (s.color === 'indigo') e.currentTarget.style.backgroundColor = primaryColor;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        if (s.color === 'indigo') e.currentTarget.style.backgroundColor = `${primaryColor}15`;
+                                    }}
+                                >
                                     <s.icon size={24} />
                                 </div>
                                 <ArrowUpRight className="text-gray-300 group-hover:text-gray-400 transition-colors" size={20} />
@@ -140,7 +107,14 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                                 </h3>
                                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Real-time payment audit</p>
                             </div>
-                            <Button variant="ghost" size="sm" className="text-indigo-600 font-bold text-xs hover:bg-indigo-50 px-4">
+                            <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="font-bold text-xs px-4 transition-colors"
+                                style={{ color: primaryColor }}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = `${primaryColor}15`)}
+                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
+                            >
                                 View Ledger
                             </Button>
                         </div>
@@ -186,7 +160,14 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                                 </h3>
                                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Tenant Acquisition</p>
                             </div>
-                            <Button variant="ghost" size="sm" className="text-indigo-600 font-bold text-xs hover:bg-indigo-50 px-4">
+                            <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="font-bold text-xs px-4 transition-colors"
+                                style={{ color: primaryColor }}
+                                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = `${primaryColor}15`)}
+                                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
+                            >
                                 Manage
                             </Button>
                         </div>
@@ -194,9 +175,25 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                             {stats.recent_tenants.length > 0 ? (
                                 <div className="space-y-2">
                                     {stats.recent_tenants.map((tenant) => (
-                                        <div key={tenant.id} className="group flex items-center justify-between p-4 rounded-2xl border border-gray-50 hover:bg-indigo-50/30 hover:border-indigo-100 transition-all">
+                                        <div 
+                                            key={tenant.id} 
+                                            className="group flex items-center justify-between p-4 rounded-2xl border border-gray-50 transition-all"
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = `${primaryColor}05`;
+                                                e.currentTarget.style.borderColor = `${primaryColor}20`;
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = '';
+                                                e.currentTarget.style.borderColor = '';
+                                            }}
+                                        >
                                             <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-extrabold text-xl shadow-inner group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                <div 
+                                                    className="h-12 w-12 rounded-2xl flex items-center justify-center font-extrabold text-xl shadow-inner group-hover:text-white transition-colors"
+                                                    style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}
+                                                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = primaryColor)}
+                                                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = `${primaryColor}15`)}
+                                                >
                                                     {tenant.name.charAt(0)}
                                                 </div>
                                                 <div>
@@ -204,7 +201,10 @@ export default function Dashboard({ stats }: { stats: Stat }) {
                                                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{tenant.domain}</p>
                                                 </div>
                                             </div>
-                                            <Badge className="bg-indigo-50 text-indigo-600 border-none px-3 py-1 text-[10px] font-bold group-hover:bg-white transition-colors">
+                                            <Badge 
+                                                className="border-none px-3 py-1 text-[10px] font-bold transition-colors"
+                                                style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}
+                                            >
                                                 Active
                                             </Badge>
                                         </div>

@@ -5,17 +5,18 @@ import SiteFooter from '@/components/site-footer';
 
 // ─── Welcome / Home page ───────────────────────────────────────────────────────
 export default function Welcome({ canRegister = true }: { canRegister?: boolean }) {
-    const { auth } = usePage().props as any;
+    const { auth, branding } = usePage().props as any;
+    const primaryColor = branding?.primary_color || '#4f46e5';
 
     return (
         <>
-            <Head title="EliteCoach — Empower Your Expertise">
+            <Head title={`${branding?.name || 'EliteCoach'} — Empower Your Expertise`}>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
                     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
                     rel="stylesheet"
                 />
-                <meta name="description" content="EliteCoach — the all-in-one platform for elite coaches who demand precision. Manage schedules, automate payments, and gain AI-driven insights." />
+                <meta name="description" content={`${branding?.name || 'EliteCoach'} — the all-in-one platform for elite coaches who demand precision. Manage schedules, automate payments, and gain AI-driven insights.`} />
             </Head>
 
             <div className="bg-[#f7f9fb] min-h-screen" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -28,14 +29,16 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                 >
                     {/* Background blobs */}
                     <div className="absolute top-20 left-1/4 w-96 h-96 rounded-full opacity-25 pointer-events-none"
-                        style={{ background: 'radial-gradient(circle, #a5b4fc 0%, transparent 70%)', filter: 'blur(40px)' }} />
+                        style={{ background: `radial-gradient(circle, ${primaryColor}44 0%, transparent 70%)`, filter: 'blur(40px)' }} />
                     <div className="absolute bottom-20 right-1/4 w-72 h-72 rounded-full opacity-20 pointer-events-none"
-                        style={{ background: 'radial-gradient(circle, #818cf8 0%, transparent 70%)', filter: 'blur(40px)' }} />
+                        style={{ background: `radial-gradient(circle, ${primaryColor}33 0%, transparent 70%)`, filter: 'blur(40px)' }} />
 
                     <div className="relative z-10 max-w-4xl mx-auto">
                         {/* Badge */}
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 mb-8">
-                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold border mb-8"
+                            style={{ color: primaryColor, backgroundColor: `${primaryColor}10`, borderColor: `${primaryColor}20` }}
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: primaryColor }} />
                             Trusted by 5,000+ Coaches Worldwide · +124% Avg. ROI
                         </div>
 
@@ -47,7 +50,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             Empower Your Expertise.
                             <span
                                 className="block mt-2"
-                                style={{ background: 'linear-gradient(135deg, #4f46e5, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                                style={{ background: `linear-gradient(135deg, ${primaryColor}, ${primaryColor}dd)`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                             >
                                 Scale Your Coaching Business.
                             </span>
@@ -58,25 +61,26 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                            <Link
-                                href={register()}
-                                className="h-12 px-8 rounded-xl text-base font-semibold text-white inline-flex items-center gap-2 transition-transform hover:scale-105"
-                                style={{
-                                    background: 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)',
-                                    boxShadow: '0 8px 24px rgba(79,70,229,0.35)',
-                                }}
-                            >
-                                Start Free Today
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                            </Link>
-                            <a
-                                href="#features"
-                                className="h-12 px-8 rounded-xl text-base font-semibold text-gray-700 bg-white border border-gray-200 inline-flex items-center gap-2 hover:border-indigo-200 hover:text-indigo-600 transition-all"
-                            >
-                                See How It Works
-                            </a>
+                                <Link
+                                    href={register()}
+                                    className="h-12 px-8 rounded-xl text-base font-semibold text-white inline-flex items-center gap-2 transition-transform hover:scale-105"
+                                    style={{
+                                        background: `linear-gradient(180deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`,
+                                        boxShadow: `0 8px 24px ${primaryColor}44`,
+                                    }}
+                                >
+                                    Start Free Today
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </Link>
+                                <a
+                                    href="#features"
+                                    className="h-12 px-8 rounded-xl text-base font-semibold text-gray-700 bg-white border border-gray-200 inline-flex items-center gap-2 transition-all hover:border-[var(--hover-border)] hover:text-[var(--hover-text)]"
+                                    style={{ '--hover-border': `${primaryColor}4d`, '--hover-text': primaryColor } as any}
+                                >
+                                    See How It Works
+                                </a>
                         </div>
 
                         {/* Social proof */}
@@ -98,7 +102,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                 <section id="features" className="py-24 px-6 lg:px-16" style={{ background: '#ffffff' }}>
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-16">
-                            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 mb-3 block">Precision Tools</span>
+                            <span className="text-xs font-semibold uppercase tracking-widest mb-3 block" style={{ color: primaryColor }}>Precision Tools</span>
                             <h2
                                 className="text-4xl font-bold text-gray-900 mb-4"
                                 style={{ fontFamily: 'Manrope, sans-serif', letterSpacing: '-0.01em' }}
@@ -106,7 +110,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                 Precision Tools for Precision Coaching
                             </h2>
                             <p className="text-gray-500 max-w-xl mx-auto">
-                                EliteCoach provides the infrastructure you need to focus on what matters most: your clients' transformation.
+                                {branding?.name || 'EliteCoach'} provides the infrastructure you need to focus on what matters most: your clients' transformation.
                             </p>
                         </div>
 
@@ -189,7 +193,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     Ready to Elevate Your Practice?
                                 </h2>
                                 <p className="text-gray-500 leading-relaxed mb-8">
-                                    Join thousands of top-tier coaches who have optimized their workflow and doubled their capacity with EliteCoach. Our platform is engineered for the elite.
+                                    Join thousands of top-tier coaches who have optimized their workflow and doubled their capacity with {branding?.name || 'EliteCoach'}. Our platform is engineered for the elite.
                                 </p>
 
                                 <div className="space-y-5">
@@ -200,8 +204,8 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                                     ].map((step) => (
                                         <div key={step.step} className="flex gap-4">
                                             <div
-                                                className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold text-indigo-600"
-                                                style={{ background: '#eef2ff' }}
+                                                className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold"
+                                                style={{ background: `${primaryColor}15`, color: primaryColor }}
                                             >
                                                 {step.step}
                                             </div>
@@ -230,10 +234,10 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             {/* Stats card grid */}
                             <div className="grid grid-cols-2 gap-4">
                                 {[
-                                    { value: '5,000+', label: 'Elite Coaches', bg: '#4f46e5', text: '#fff' },
-                                    { value: '+124%', label: 'Average Client ROI', bg: '#eef2ff', text: '#4f46e5' },
-                                    { value: '6', label: 'Continents Served', bg: '#eef2ff', text: '#4f46e5' },
-                                    { value: '98%', label: 'Satisfaction Rate', bg: '#4f46e5', text: '#fff' },
+                                    { value: '5,000+', label: 'Elite Coaches', bg: primaryColor, text: '#fff' },
+                                    { value: '+124%', label: 'Average Client ROI', bg: `${primaryColor}15`, text: primaryColor },
+                                    { value: '6', label: 'Continents Served', bg: `${primaryColor}15`, text: primaryColor },
+                                    { value: '98%', label: 'Satisfaction Rate', bg: primaryColor, text: '#fff' },
                                 ].map((s) => (
                                     <div
                                         key={s.label}
@@ -274,7 +278,8 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
                             <Link
                                 href={register()}
-                                className="h-12 px-8 rounded-xl text-base font-semibold text-indigo-700 bg-white inline-flex items-center gap-2 hover:bg-indigo-50 transition-colors"
+                                className="h-12 px-8 rounded-xl text-base font-semibold inline-flex items-center gap-2 hover:opacity-90 transition-all"
+                                style={{ color: primaryColor, backgroundColor: '#ffffff' }}
                             >
                                 Get Started Free
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -283,7 +288,7 @@ export default function Welcome({ canRegister = true }: { canRegister?: boolean 
                             </Link>
                             <Link
                                 href="/about"
-                                className="h-12 px-8 rounded-xl text-base font-semibold text-white border border-indigo-400 inline-flex items-center hover:bg-white/10 transition-colors"
+                                className="h-12 px-8 rounded-xl text-base font-semibold text-white border border-white/30 inline-flex items-center hover:bg-white/10 transition-colors"
                             >
                                 Learn About Us
                             </Link>

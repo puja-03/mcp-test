@@ -4,7 +4,8 @@ import SiteHeader from '@/components/site-header';
 import SiteFooter from '@/components/site-footer';
 
 export default function About() {
-    const { auth } = usePage().props as any;
+    const { auth, branding } = usePage().props as any;
+    const primaryColor = branding?.primary_color || '#4f46e5';
 
     const values = [
         {
@@ -55,13 +56,13 @@ export default function About() {
 
     return (
         <>
-            <Head title="About Us — EliteCoach">
+            <Head title={`About Us — ${branding?.name || 'EliteCoach'}`}>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
                     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
                     rel="stylesheet"
                 />
-                <meta name="description" content="Learn about EliteCoach — our mission, values, and the team behind the platform." />
+                <meta name="description" content={`Learn about ${branding?.name || 'EliteCoach'} — our mission, values, and the team behind the platform.`} />
             </Head>
 
             <div className="bg-[#f7f9fb] min-h-screen" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -76,7 +77,7 @@ export default function About() {
                         style={{ background: 'radial-gradient(circle, #a5b4fc 0%, transparent 70%)', filter: 'blur(40px)' }} />
 
                     <div className="max-w-3xl mx-auto relative z-10">
-                        <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 mb-4 block">
+                        <span className="text-xs font-semibold uppercase tracking-widest mb-4 block" style={{ color: primaryColor }}>
                             Our Story
                         </span>
                         <h1
@@ -86,7 +87,7 @@ export default function About() {
                             We believe the barrier between potential and success shouldn't be access.
                         </h1>
                         <p className="text-lg text-gray-500 leading-relaxed">
-                            EliteCoach connects high-potential talent with industry titans through a precision-engineered digital platform.
+                            {branding?.name || 'EliteCoach'} connects high-potential talent with industry titans through a precision-engineered digital platform.
                         </p>
                     </div>
                 </section>
@@ -95,7 +96,7 @@ export default function About() {
                 <section className="py-24 px-6 lg:px-16 bg-white">
                     <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
                         <div>
-                            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 mb-3 block">
+                            <span className="text-xs font-semibold uppercase tracking-widest mb-3 block" style={{ color: primaryColor }}>
                                 A Vision Born from Precision
                             </span>
                             <h2
@@ -105,7 +106,7 @@ export default function About() {
                                 Built for the Coaches Who Shape the World's Leaders
                             </h2>
                             <p className="text-gray-500 leading-relaxed mb-6">
-                                Founded in 2018, EliteCoach began with a simple observation: the world's most successful leaders all had one thing in common—a dedicated mentor. Yet, for most people, this level of guidance was out of reach.
+                                Founded in 2018, {branding?.name || 'EliteCoach'} began with a simple observation: the world's most successful leaders all had one thing in common—a dedicated mentor. Yet, for most people, this level of guidance was out of reach.
                             </p>
                             <p className="text-gray-500 leading-relaxed">
                                 Our founders set out to build more than just a coaching app; they built a global infrastructure for professional evolution—one that pairs elite coaches with high-potential clients through AI-driven precision.
@@ -126,8 +127,8 @@ export default function About() {
                                     style={{ background: '#f7f9fb' }}
                                 >
                                     <div
-                                        className="text-3xl font-bold text-indigo-600 mb-1"
-                                        style={{ fontFamily: 'Manrope, sans-serif' }}
+                                        className="text-3xl font-bold mb-1"
+                                        style={{ fontFamily: 'Manrope, sans-serif', color: primaryColor }}
                                     >
                                         {s.value}
                                     </div>
@@ -144,7 +145,7 @@ export default function About() {
                         {/* Visual */}
                         <div
                             className="rounded-3xl p-12 text-center"
-                            style={{ background: 'linear-gradient(135deg, #1e1b4b 0%, #4338ca 100%)' }}
+                            style={{ background: `linear-gradient(135deg, #1e1b4b 0%, ${primaryColor} 100%)` }}
                         >
                             <div className="text-6xl font-bold text-white mb-3" style={{ fontFamily: 'Manrope, sans-serif' }}>
                                 6
@@ -171,7 +172,7 @@ export default function About() {
                                 Scaling Human Potential Across the Globe
                             </h2>
                             <p className="text-gray-500 leading-relaxed mb-6">
-                                Today, EliteCoach serves thousands of individuals across six continents. Our proprietary matching algorithm paired with rigorous human vetting ensures that every connection is a catalyst for growth.
+                                Today, {branding?.name || 'EliteCoach'} serves thousands of individuals across six continents. Our proprietary matching algorithm paired with rigorous human vetting ensures that every connection is a catalyst for growth.
                             </p>
                             <p className="text-gray-500 leading-relaxed">
                                 Every session is backed by our commitment to excellence—from the technology that powers our platform to the standards we hold our coaches to.
@@ -184,7 +185,7 @@ export default function About() {
                 <section className="py-24 px-6 lg:px-16 bg-white">
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-16">
-                            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 mb-3 block">Core Values</span>
+                            <span className="text-xs font-semibold uppercase tracking-widest mb-3 block" style={{ color: primaryColor }}>Core Values</span>
                             <h2
                                 className="text-3xl font-bold text-gray-900"
                                 style={{ fontFamily: 'Manrope, sans-serif', letterSpacing: '-0.01em' }}
@@ -217,7 +218,7 @@ export default function About() {
                 <section className="py-24 px-6 lg:px-16" style={{ background: '#f7f9fb' }}>
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-16">
-                            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 mb-3 block">Meet the Team</span>
+                            <span className="text-xs font-semibold uppercase tracking-widest mb-3 block" style={{ color: primaryColor }}>Meet the Team</span>
                             <h2
                                 className="text-3xl font-bold text-gray-900 mb-3"
                                 style={{ fontFamily: 'Manrope, sans-serif', letterSpacing: '-0.01em' }}
@@ -245,7 +246,7 @@ export default function About() {
                                     >
                                         {member.name}
                                     </h4>
-                                    <p className="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-4">
+                                    <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: primaryColor }}>
                                         {member.role}
                                     </p>
                                     <p className="text-sm text-gray-500 leading-relaxed">{member.bio}</p>
@@ -272,7 +273,8 @@ export default function About() {
                         </p>
                         <Link
                             href={register()}
-                            className="h-12 px-8 rounded-xl text-base font-semibold text-indigo-700 bg-white inline-flex items-center gap-2 hover:bg-indigo-50 transition-colors"
+                            className="h-12 px-8 rounded-xl text-base font-semibold bg-white inline-flex items-center gap-2 transition-all hover:opacity-90"
+                            style={{ color: primaryColor }}
                         >
                             Get Started Free
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
