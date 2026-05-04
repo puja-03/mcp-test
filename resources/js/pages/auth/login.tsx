@@ -20,10 +20,11 @@ type Props = {
 export default function Login({ status, canResetPassword, canRegister }: Props) {
     return (
         <>
-            {/* <Head title="Log in — EliteCoach" /> */}
+            <Head title="Access Your Dashboard" />
 
             {status && (
-                <div className="mb-4 px-4 py-3 rounded-lg bg-green-50 text-green-700 text-sm font-medium border border-green-100">
+                <div className="mb-6 px-4 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-100 flex items-center gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     {status}
                 </div>
             )}
@@ -31,14 +32,14 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
             <Form
                 {...store.form()}
                 resetOnSuccess={['password']}
-                className="flex flex-col gap-5"
+                className="flex flex-col gap-6"
             >
                 {({ processing, errors }) => (
                     <>
                         {/* Email */}
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                                Email address
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="email" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">
+                                Email Identity
                             </Label>
                             <Input
                                 id="email"
@@ -48,25 +49,25 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                                 autoFocus
                                 tabIndex={1}
                                 autoComplete="email"
-                                placeholder="you@example.com"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                placeholder="name@elitecoach.com"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.email} />
+                            <InputError message={errors.email} className="ml-1" />
                         </div>
 
                         {/* Password */}
-                        <div className="flex flex-col gap-1.5">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                                    Password
+                        <div className="flex flex-col gap-2">
+                            <div className="flex items-center justify-between ml-1">
+                                <Label htmlFor="password" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">
+                                    Secure Key
                                 </Label>
                                 {canResetPassword && (
                                     <Link
                                         href={request()}
                                         tabIndex={5}
-                                        className="text-xs text-indigo-600 hover:text-indigo-700 font-medium"
+                                        className="text-[10px] text-indigo-500 hover:text-indigo-600 font-extrabold uppercase tracking-wider transition-colors"
                                     >
-                                        Forgot password?
+                                        Recover Access
                                     </Link>
                                 )}
                             </div>
@@ -76,60 +77,63 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                                 required
                                 tabIndex={2}
                                 autoComplete="current-password"
-                                placeholder="Enter your password"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                placeholder="••••••••••••"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.password} />
+                            <InputError message={errors.password} className="ml-1" />
                         </div>
 
                         {/* Remember me */}
-                        <div className="flex items-center gap-2.5">
-                            <Checkbox id="remember" name="remember" tabIndex={3} />
-                            <Label htmlFor="remember" className="text-sm text-gray-600 cursor-pointer">
-                                Keep me signed in
+                        <div className="flex items-center gap-3 ml-1">
+                            <Checkbox 
+                                id="remember" 
+                                name="remember" 
+                                tabIndex={3} 
+                                className="w-5 h-5 rounded-lg border-slate-200 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 transition-all" 
+                            />
+                            <Label htmlFor="remember" className="text-xs font-bold text-slate-500 cursor-pointer select-none">
+                                Keep session active
                             </Label>
                         </div>
 
                         {/* Submit */}
-                        <Button
-                            type="submit"
-                            tabIndex={4}
-                            disabled={processing}
-                            data-test="login-button"
-                            className="h-11 w-full rounded-lg text-sm font-semibold text-white transition-all"
-                            style={{
-                                background: processing
-                                    ? '#6366f1'
-                                    : 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)',
-                                boxShadow: '0 4px 14px rgba(79,70,229,0.35)',
-                            }}
-                        >
-                            {processing && <Spinner />}
-                            {processing ? 'Signing in…' : 'Sign In'}
-                        </Button>
-
-                        {/* Divider */}
-                        <div className="relative my-1">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-100" />
-                            </div>
-                            <div className="relative flex justify-center">
-                                <span className="px-3 bg-white text-xs text-gray-400 uppercase tracking-widest">or</span>
-                            </div>
+                        <div className="pt-2">
+                            <Button
+                                type="submit"
+                                tabIndex={4}
+                                disabled={processing}
+                                data-test="login-button"
+                                className="h-14 w-full rounded-2xl text-sm font-extrabold text-white transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group shadow-[0_10px_20px_-5px_rgba(79,70,229,0.3)] hover:shadow-[0_20px_30px_-10px_rgba(79,70,229,0.4)]"
+                                style={{
+                                    background: 'linear-gradient(180deg, #4f46e5 0%, #3525cd 100%)',
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                {processing ? (
+                                    <div className="flex items-center gap-3">
+                                        <Spinner className="w-5 h-5 border-white/20 border-t-white" />
+                                        <span className="tracking-tight">Verifying Identity...</span>
+                                    </div>
+                                ) : (
+                                    <span className="tracking-tight">Sign In to Workspace</span>
+                                )}
+                            </Button>
                         </div>
 
                         {/* Register link */}
                         {canRegister && (
-                            <p className="text-center text-sm text-gray-500">
-                                New to EliteCoach?{' '}
-                                <Link
-                                    href={register()}
-                                    tabIndex={6}
-                                    className="font-semibold text-indigo-600 hover:text-indigo-700"
-                                >
-                                    Create a free account
-                                </Link>
-                            </p>
+                            <div className="text-center pt-2">
+                                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                                    New to the platform?{' '}
+                                    <Link
+                                        href={register()}
+                                        tabIndex={6}
+                                        className="text-indigo-600 hover:text-indigo-700 ml-1 transition-colors"
+                                    >
+                                        Initialize Account
+                                    </Link>
+                                </p>
+                            </div>
                         )}
                     </>
                 )}
@@ -141,7 +145,7 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
 Login.layout = (page: React.ReactNode) => (
     <AuthEliteCoachLayout
         title="Welcome Back"
-        description="Access your elite coaching dashboard"
+        description="Authenticate to access your high-performance dashboard and coaching tools."
     >
         {page}
     </AuthEliteCoachLayout>

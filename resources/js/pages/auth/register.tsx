@@ -12,7 +12,7 @@ import AuthEliteCoachLayout from '@/layouts/auth/auth-elitecoach-layout';
 export default function Register() {
     return (
         <>
-            <Head title="Create Account — EliteCoach" />
+            <Head title="Join EliteCoach" />
 
             <Form
                 {...store.form()}
@@ -23,9 +23,9 @@ export default function Register() {
                 {({ processing, errors }) => (
                     <>
                         {/* Full Name */}
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="name" className="text-sm font-medium text-gray-700">
-                                Full name
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="name" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">
+                                Full Name
                             </Label>
                             <Input
                                 id="name"
@@ -36,15 +36,15 @@ export default function Register() {
                                 autoComplete="name"
                                 name="name"
                                 placeholder="Dr. Jane Smith"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.name} className="mt-1" />
+                            <InputError message={errors.name} className="ml-1" />
                         </div>
 
                         {/* Email */}
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                                Email address
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="email" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">
+                                Email Workspace
                             </Label>
                             <Input
                                 id="email"
@@ -53,16 +53,16 @@ export default function Register() {
                                 tabIndex={2}
                                 autoComplete="email"
                                 name="email"
-                                placeholder="you@example.com"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                placeholder="name@elitecoach.com"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.email} />
+                            <InputError message={errors.email} className="ml-1" />
                         </div>
 
                         {/* Password */}
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                                Password
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="password" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">
+                                Private Key
                             </Label>
                             <PasswordInput
                                 id="password"
@@ -70,16 +70,16 @@ export default function Register() {
                                 tabIndex={3}
                                 autoComplete="new-password"
                                 name="password"
-                                placeholder="Create a strong password"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                placeholder="Create a strong key"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.password} />
+                            <InputError message={errors.password} className="ml-1" />
                         </div>
 
                         {/* Confirm Password */}
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="password_confirmation" className="text-sm font-medium text-gray-700">
-                                Confirm password
+                        <div className="flex flex-col gap-2">
+                            <Label htmlFor="password_confirmation" className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">
+                                Confirm Key
                             </Label>
                             <PasswordInput
                                 id="password_confirmation"
@@ -87,52 +87,52 @@ export default function Register() {
                                 tabIndex={4}
                                 autoComplete="new-password"
                                 name="password_confirmation"
-                                placeholder="Repeat your password"
-                                className="h-11 rounded-lg border-gray-200 bg-slate-50 px-4 text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                                placeholder="Repeat your key"
+                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
                             />
-                            <InputError message={errors.password_confirmation} />
+                            <InputError message={errors.password_confirmation} className="ml-1" />
                         </div>
 
                         {/* Submit */}
-                        <Button
-                            type="submit"
-                            tabIndex={5}
-                            data-test="register-user-button"
-                            className="h-11 w-full rounded-lg text-sm font-semibold text-white transition-all mt-1"
-                            style={{
-                                background: 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)',
-                                boxShadow: '0 4px 14px rgba(79,70,229,0.35)',
-                            }}
-                        >
-                            {processing && <Spinner />}
-                            {processing ? 'Creating account…' : 'Create Free Account'}
-                        </Button>
-
-                        {/* Terms note */}
-                        <p className="text-center text-xs text-gray-400 leading-relaxed -mt-1">
-                            By creating an account you agree to our{' '}
-                            <span className="text-indigo-500">Terms of Service</span>{' '}
-                            and{' '}
-                            <span className="text-indigo-500">Privacy Policy</span>.
-                        </p>
-
-                        {/* Divider */}
-                        <div className="relative my-0.5">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-gray-100" />
-                            </div>
-                            <div className="relative flex justify-center">
-                                <span className="px-3 bg-white text-xs text-gray-400 uppercase tracking-widest">or</span>
-                            </div>
+                        <div className="pt-2">
+                            <Button
+                                type="submit"
+                                tabIndex={5}
+                                data-test="register-user-button"
+                                className="h-14 w-full rounded-2xl text-sm font-extrabold text-white transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group shadow-[0_10px_20px_-5px_rgba(79,70,229,0.3)] hover:shadow-[0_20px_30px_-10px_rgba(79,70,229,0.4)]"
+                                style={{
+                                    background: 'linear-gradient(180deg, #4f46e5 0%, #3525cd 100%)',
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                {processing ? (
+                                    <div className="flex items-center gap-3">
+                                        <Spinner className="w-5 h-5 border-white/20 border-t-white" />
+                                        <span className="tracking-tight">Initializing...</span>
+                                    </div>
+                                ) : (
+                                    <span className="tracking-tight">Create Professional Account</span>
+                                )}
+                            </Button>
                         </div>
 
-                        {/* Login link */}
-                        <p className="text-center text-sm text-gray-500">
-                            Already have an account?{' '}
-                            <Link href={login()} tabIndex={6} className="font-semibold text-indigo-600 hover:text-indigo-700">
-                                Sign in
-                            </Link>
+                        {/* Terms note */}
+                        <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                            By initializing you agree to our{' '}
+                            <span className="text-indigo-500 underline underline-offset-4">Terms</span>{' '}
+                            and{' '}
+                            <span className="text-indigo-500 underline underline-offset-4">Privacy</span>.
                         </p>
+
+                        {/* Login link */}
+                        <div className="text-center pt-2">
+                            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                                Already registered?{' '}
+                                <Link href={login()} tabIndex={6} className="text-indigo-600 hover:text-indigo-700 ml-1 transition-colors">
+                                    Sign In
+                                </Link>
+                            </p>
+                        </div>
                     </>
                 )}
             </Form>
@@ -142,8 +142,8 @@ export default function Register() {
 
 Register.layout = (page: React.ReactNode) => (
     <AuthEliteCoachLayout
-        title="Create Your Account"
-        description="Join thousands of elite coaches on EliteCoach"
+        title="Initialize Your Workspace"
+        description="Join an elite network of high-performance coaches and scale your expertise today."
     >
         {page}
     </AuthEliteCoachLayout>
