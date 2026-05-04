@@ -10,7 +10,18 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'domain'];
+    protected $fillable = [
+        'name',
+        'domain',
+        'logo_url',
+        'primary_color',
+        'secondary_color',
+        'settings'
+    ];
+
+    protected $casts = [
+        'settings' => 'array',
+    ];
 
     public function users(): HasMany
     {

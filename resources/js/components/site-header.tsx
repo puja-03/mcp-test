@@ -2,7 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { dashboard, login, register } from '@/routes';
 
 export default function SiteHeader() {
-    const { auth } = usePage().props as any;
+    const { auth, branding } = usePage().props as any;
 
     return (
         <nav
@@ -10,23 +10,27 @@ export default function SiteHeader() {
             style={{
                 background: 'rgba(255,255,255,0.85)',
                 backdropFilter: 'blur(16px)',
-                borderBottom: '1px solid rgba(79,70,229,0.08)',
+                borderBottom: `1px solid ${branding?.primary_color || '#4f46e5'}15`,
             }}
         >
             <Link href="/" className="flex items-center gap-2.5">
-                <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, #4f46e5, #4338ca)' }}
-                >
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 2L3 7v10h5v-6h4v6h5V7L10 2z" fill="white" />
-                    </svg>
-                </div>
+                {branding?.logo_url ? (
+                    <img src={branding.logo_url} alt={branding.name} className="h-8 w-auto rounded-lg" />
+                ) : (
+                    <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, ${branding?.primary_color || '#4f46e5'}, ${branding?.primary_color || '#4338ca'}dd)` }}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L3 7v10h5v-6h4v6h5V7L10 2z" fill="white" />
+                        </svg>
+                    </div>
+                )}
                 <span
                     className="font-bold text-lg text-gray-900"
                     style={{ fontFamily: 'Manrope, sans-serif' }}
                 >
-                    EliteCoach
+                    {branding?.name || 'EliteCoach'}
                 </span>
             </Link>
 
@@ -37,46 +41,51 @@ export default function SiteHeader() {
                     { label: 'Pricing', href: '/#pricing' },
                     { label: 'About', href: '/about' },
                 ].map((item) => (
-                    <a
-                        key={item.label}
-                        href={item.href}
-                        className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
-                    >
-                        {item.label}
-                    </a>
-                ))}
-            </div>
+                        <a
+                            key={item.label}
+                            href={item.href}
+                            className="text-sm font-medium text-gray-600 transition-colors"
+                            style={{ '--hover-color': branding?.primary_color || '#4f46e5' } as React.CSSProperties}
+                            onMouseEnter={(e) => (e.currentTarget.style.color = branding?.primary_color || '#4f46e5')}
+                            onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+                        >
+                            {item.label}
+                        </a>
+                    ))}
+                </div>
 
-            <div className="flex items-center gap-3">
-                {auth?.user ? (
-                    <Link
-                        href={dashboard()}
-                        className="h-9 px-5 rounded-lg text-sm font-semibold text-white flex items-center"
-                        style={{ background: 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)' }}
-                    >
-                        Dashboard
-                    </Link>
-                ) : (
-                    <>
+                <div className="flex items-center gap-3">
+                    {auth?.user ? (
                         <Link
-                            href={login()}
-                            className="text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors px-4 py-2"
-                        >
-                            Sign in
-                        </Link>
-                        <Link
-                            href={register()}
+                            href={dashboard()}
                             className="h-9 px-5 rounded-lg text-sm font-semibold text-white flex items-center"
-                            style={{
-                                background: 'linear-gradient(180deg, #4f46e5 0%, #4338ca 100%)',
-                                boxShadow: '0 2px 8px rgba(79,70,229,0.3)',
-                            }}
+                            style={{ background: branding?.primary_color || '#4f46e5' }}
                         >
-                            Get Started
+                            Dashboard
                         </Link>
-                    </>
-                )}
-            </div>
+                    ) : (
+                        <>
+                            <Link
+                                href={login()}
+                                className="text-sm font-medium text-gray-700 transition-colors px-4 py-2"
+                                onMouseEnter={(e) => (e.currentTarget.style.color = branding?.primary_color || '#4f46e5')}
+                                onMouseLeave={(e) => (e.currentTarget.style.color = '')}
+                            >
+                                Sign in
+                            </Link>
+                            <Link
+                                href={register()}
+                                className="h-9 px-5 rounded-lg text-sm font-semibold text-white flex items-center"
+                                style={{
+                                    background: branding?.primary_color || '#4f46e5',
+                                    boxShadow: `0 2px 8px ${branding?.primary_color || '#4f46e5'}4d`,
+                                }}
+                            >
+                                Get Started
+                            </Link>
+                        </>
+                    )}
+                </div>
         </nav>
     );
 }

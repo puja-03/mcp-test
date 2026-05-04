@@ -44,6 +44,11 @@ class HandleInertiaRequests extends Middleware
                     'permissions' => $request->user()->role ? $request->user()->role->permissions->pluck('name')->toArray() : [],
                 ]) : null,
             ],
+            'branding' => [
+                'name' => app()->has('currentTenant') ? app('currentTenant')->name : config('app.name'),
+                'logo_url' => app()->has('currentTenant') ? app('currentTenant')->logo_url : null,
+                'primary_color' => app()->has('currentTenant') ? app('currentTenant')->primary_color : '#4f46e5',
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

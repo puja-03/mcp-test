@@ -12,6 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('domain')->unique();
+            $table->string('logo_url')->nullable();
+            $table->string('primary_color')->default('#4f46e5');
+            $table->string('secondary_color')->nullable();
+            $table->json('settings')->nullable();
             $table->timestamps();
         });
     }
