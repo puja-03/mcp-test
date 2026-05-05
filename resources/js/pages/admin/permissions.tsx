@@ -109,7 +109,7 @@ export default function Permissions({ permissions }: { permissions: Permission[]
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
                                         placeholder="e.g. manage-billing"
-                                        className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/30 transition-all outline-none font-mono"
+                                        className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/30 transition-all outline-none font-mono text-black"
                                     />
                                     <p className="text-[10px] font-bold text-gray-400 mt-2">Use lowercase with hyphens for technical identifiers.</p>
                                     {errors.name && <p className="text-xs font-bold text-rose-500 mt-1">{errors.name}</p>}

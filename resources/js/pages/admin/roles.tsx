@@ -77,7 +77,6 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
             setData('permissions', [...data.permissions, id]);
         }
     };
-
     return (
         <>
             <div className="w-full flex-1 flex flex-col p-6">
@@ -106,17 +105,7 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-[500px] rounded-[2rem] border-none shadow-2xl p-0 overflow-hidden">
-                                <div className="bg-slate-900 p-8 text-white">
-                                    <DialogHeader>
-                                        <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                                            <Shield size={24} className="text-indigo-400" />
-                                        </div>
-                                        <DialogTitle className="text-2xl font-extrabold tracking-tight" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                                            {editRole ? 'Modify Access Role' : 'Create Access Role'}
-                                        </DialogTitle>
-                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Configure role name and capabilities</p>
-                                    </DialogHeader>
-                                </div>
+                                
                                 <form onSubmit={submit} className="p-8 space-y-8 bg-white">
                                     <div className="space-y-2">
                                         <Label htmlFor="name" className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">Role Name</Label>
@@ -125,7 +114,7 @@ export default function Roles({ roles, permissions }: { roles: Role[]; permissio
                                             value={data.name}
                                             onChange={(e) => setData('name', e.target.value)}
                                             placeholder="e.g. Content Curator"
-                                            className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none"
+                                            className="h-12 px-4 rounded-xl border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 transition-all outline-none text-black"
                                         />
                                         {errors.name && <p className="text-xs font-bold text-rose-500 mt-1">{errors.name}</p>}
                                     </div>
