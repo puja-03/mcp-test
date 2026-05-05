@@ -50,7 +50,7 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                                 tabIndex={1}
                                 autoComplete="email"
                                 placeholder="name@elitecoach.com"
-                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
+                                className=""
                             />
                             <InputError message={errors.email} className="ml-1" />
                         </div>
@@ -78,7 +78,7 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
                                 tabIndex={2}
                                 autoComplete="current-password"
                                 placeholder="••••••••••••"
-                                className="h-12 rounded-2xl border-none bg-slate-50 px-5 text-sm font-medium text-slate-900 placeholder:text-slate-300 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 transition-all duration-300"
+                                className=""
                             />
                             <InputError message={errors.password} className="ml-1" />
                         </div>
