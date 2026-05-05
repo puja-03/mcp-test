@@ -90,17 +90,6 @@ export default function Permissions({ permissions }: { permissions: Permission[]
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[450px] rounded-[2rem] border-none shadow-2xl p-0 overflow-hidden">
-                            <div className="bg-slate-900 p-8 text-white">
-                                <DialogHeader>
-                                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                                        <Key size={24} className="text-emerald-400" />
-                                    </div>
-                                    <DialogTitle className="text-2xl font-extrabold tracking-tight" style={{ fontFamily: 'Manrope, sans-serif' }}>
-                                        {editPermission ? 'Modify Key' : 'Generate Key'}
-                                    </DialogTitle>
-                                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Define internal permission identifier</p>
-                                </DialogHeader>
-                            </div>
                             <form onSubmit={submit} className="p-8 space-y-6 bg-white">
                                 <div className="space-y-2">
                                     <Label htmlFor="name" className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider">Internal Name (Slug)</Label>
