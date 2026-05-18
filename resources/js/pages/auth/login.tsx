@@ -85,11 +85,11 @@ export default function Login({ status, canResetPassword, canRegister }: Props) 
 
                         {/* Remember me */}
                         <div className="flex items-center gap-3 ml-1">
-                            <Checkbox 
-                                id="remember" 
-                                name="remember" 
-                                tabIndex={3} 
-                                className="w-5 h-5 rounded-lg border-slate-200 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 transition-all" 
+                            <Checkbox
+                                id="remember"
+                                name="remember"
+                                tabIndex={3}
+                                className="w-5 h-5 rounded-lg border-slate-200 data-[state=checked]:bg-indigo-600 data-[state=checked]:border-indigo-600 transition-all"
                             />
                             <Label htmlFor="remember" className="text-xs font-bold text-slate-500 cursor-pointer select-none">
                                 Keep session active
